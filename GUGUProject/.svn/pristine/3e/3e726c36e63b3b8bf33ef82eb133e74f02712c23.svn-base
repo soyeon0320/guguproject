@@ -1,0 +1,77 @@
+<%@page import="vo.JobNewsVO"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+  <% 
+
+  	JobNewsVO jv=(JobNewsVO)request.getAttribute("jobnewsVo"); 	 
+
+	String jobnewsCode = jv.getJobNewsCode();  
+  	String jobnewsTitle = jv.getJobNewsTitle();  
+	String jobnewsContent = jv.getJobNewsContent();  
+	String jobnewsUrl = jv.getJobNewsUrl();  
+	String jobnewsCopyright = jv.getJobNewsCopyright();  
+	String jobnewsEditor = jv.getJobNewsEditor();  
+	String jobnewsRegDate = jv.getJobNewsRegDate();  
+	String jobnewsGubun = jv.getJobNewsGubun();  
+	if(jobnewsGubun==null) jobnewsGubun="NEWS";
+  %>
+
+<body>
+	<form action="/GUGUProject/jobnews/update.do" method="post" >
+		<table>
+			<tr>
+				<td>구분:</td>
+				<td>
+					<input type="hidden" name="jobnewsCode" value="<%=jobnewsCode%>">
+					<select name="jobnewsGubun">
+						<option value="NEWS"<%if(jobnewsGubun.equals("NEWS")){ %> selected<%} %>>뉴스</option>
+						<option value="TIPS"<%if(jobnewsGubun.equals("TIPS")){ %> selected<%} %>>취업팁</option>
+						<option value="SISA"<%if(jobnewsGubun.equals("SISA")){ %> selected<%} %>>시사</option>
+					</select>
+				
+				</td>
+			</tr>
+			<tr>
+				<td>뉴스제목:</td>
+				<td><input type="text" name="jobnewsTitle" value="<%=jobnewsTitle%>"></td>
+			</tr>
+			<tr>
+				<td>기자명:</td>
+				<td><input type="text" name="jobnewsEditor" value="<%=jobnewsEditor%>"></td>
+			</tr>
+			<tr>
+				<td>작성일:</td>
+				<td><input type="text" name="jobnewsRegDate" value="<%=jobnewsRegDate%>"></td>
+			</tr>
+			<tr>
+				<td>출처:</td>
+				<td><input type="text" name="jobnewsCopyright" value="<%=jobnewsCopyright%>"></td>
+			</tr>			
+			<tr>
+					<td>이미지:</td>
+<!-- 				<td><input type="text" name="jobnewsUrl"></td> -->
+				
+				<form method="post" action="upload" enctype="multipart/form-data">
+			    <td><input type="file" name="jobnewsUrl" value="<%=jobnewsUrl%>"></td>
+				</form>
+			</tr>			
+			<tr>
+				<td>내용:</td>
+				<td>
+					<textarea id="jobnewsContent" name="jobnewsContent" rows="20" cols="70"><%=jobnewsContent%></textarea>
+				</td>
+			</tr>
+			
+		</table>
+		<input type="submit" value="등록">
+	
+	</form>
+</body>
+</html>

@@ -1,0 +1,24 @@
+package vo;
+
+/**
+ * 게시판 관리(통합 검색)
+ * @author ksy
+ *
+ */
+public class BoardManageVO {
+	private String code;
+	private long no;
+	
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public long getNo() {
+		return no;
+	}
+	public void setNo(long no) {
+		this.no = no;
+	}
+}

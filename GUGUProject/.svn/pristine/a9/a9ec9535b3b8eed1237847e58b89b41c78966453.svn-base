@@ -1,0 +1,15 @@
+package service;
+
+import java.util.List;
+import vo.CompanyVO;
+
+public interface CompanyService {
+	
+	public List<CompanyVO> companyList();
+	
+	public List<CompanyVO> select(CompanyVO vo);
+	
+	public int insert(CompanyVO vo);
+	
+	public int modify(CompanyVO vo);
+}

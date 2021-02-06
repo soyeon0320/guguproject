@@ -1,0 +1,113 @@
+package serviceImpl;
+
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
+import com.ibatis.sqlmap.client.SqlMapClient;
+import com.ibatis.sqlmap.engine.execution.SqlExecutor;
+
+import dao.FunBoardDAO;
+import daoImpl.FunBoardDAOImpl;
+import service.FunBoardService;
+import util.SqlMapClientFactory;
+import vo.FunBoardVO;
+import vo.PagingVO;
+
+public class FunBoardServiceImpl implements FunBoardService{
+	private static FunBoardService funBoardService;	
+	private FunBoardDAO funBoardDao;
+	private SqlMapClient smc;
+
+	public static FunBoardService getInstance() {
+		if(funBoardService==null) {
+			funBoardService = new FunBoardServiceImpl();
+		}
+		return funBoardService;
+	}
+	
+	public FunBoardServiceImpl() {
+		funBoardDao = FunBoardDAOImpl.getInstance();
+		smc = SqlMapClientFactory.getInstance();
+	}
+	
+	@Override
+	public List<FunBoardVO> FunBoardAllSelect(PagingVO pv) {
+		List<FunBoardVO> funBoardList = Collections.emptyList();
+		try {
+			funBoardList = funBoardDao.FunBoardAllSelect(smc, pv);
+		}catch(SQLException e) {
+			throw new RuntimeException("게시글 전체 조회 중 예외 발생!!!", e);
+		}
+		return funBoardList;
+	}
+	
+	@Override
+	public int FunBoardAllSelectCount() {
+		int resCnt = 0;
+		try {
+			resCnt = funBoardDao.FunBoardAllSelectCount(smc);
+		} catch (SQLException e) {
+			throw new RuntimeException("전체 데이터 개수 조회 중 예외 발생",e);
+		}
+		return resCnt;
+	}
+
+	@Override
+	public List<FunBoardVO> FunBoardSelect(FunBoardVO fbv) {
+		List<FunBoardVO> funBoardList = Collections.emptyList();
+		try {
+			funBoardList = funBoardDao.FunBoardSelect(smc, fbv);
+		}catch(SQLException e) {
+			throw new RuntimeException("게시글 부분 조회 중 예외 발생!!", e);
+		}
+		return funBoardList;
+	}
+
+	@Override
+	public int FunBoardInsert(FunBoardVO fbv) {
+		int resCnt = 0;
+		try {
+			smc.startTransaction();
+			resCnt = funBoardDao.FunBoardInsert(smc, fbv);
+			smc.commitTransaction();
+		}catch(SQLException e) {
+			try {
+				smc.endTransaction();
+			}catch(SQLException ex) {
+				ex.printStackTrace();
+			}
+			e.printStackTrace();
+		}finally {
+			try {
+				smc.endTransaction();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return resCnt;
+	}
+
+	@Override
+	public int FunBoardUpdate(FunBoardVO fbv) {
+		int resCnt = 0;
+			try {
+				resCnt = funBoardDao.FunBoardUpdate(smc, fbv);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		return resCnt;
+	}
+
+	@Override
+	public int FunBoardDelete(String funBoardCode) {
+		int resCnt = 0;
+		try {
+			resCnt = funBoardDao.FunBoardDelete(smc, funBoardCode);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return resCnt;
+	}
+
+
+}

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="jobfair">
+
+<resultMap class="JobfairVO" id="jobfairMap">
+
+	<result property="jobfairCode" column="JOBFAIR_CODE"/>
+	<result property="jobfairGroup" column="JOBFAIR_GROUP"/>
+	<result property="jobfairTitle" column="JOBFAIR_TITLE"/>
+	<result property="jobfairStartdate" column="JOBFAIR_STARTDATE"/>
+	<result property="jobfairEnddate" column="JOBFAIR_ENDDATE"/>
+	<result property="jobfairPlace" column="JOBFAIR_PLACE"/>
+	<result property="companyCode" column="COMPANY_CODE"/>
+	<result property="companyName" column="COMPANY_NAME"/>
+
+</resultMap>
+
+<select id="JobfairAllSelect" resultMap="jobfairMap">
+	SELECT JOBFAIR_CODE, JOBFAIR_GROUP, JOBFAIR_TITLE, 
+		JOBFAIR_STARTDATE, JOBFAIR_ENDDATE, JOBFAIR_PLACE, 
+		COMPANY_CODE, COMPANY_NAME 
+	FROM JOBFAIR 
+	ORDER BY JOBFAIR_STARTDATE DESC
+</select>
+
+<select id="getSearchJobfair" resultMap="jobfairMap">
+	SELECT JOBFAIR_CODE, JOBFAIR_GROUP, JOBFAIR_TITLE, 
+		JOBFAIR_STARTDATE, JOBFAIR_ENDDATE, JOBFAIR_PLACE, 
+		COMPANY_CODE, COMPANY_NAME 
+	FROM JOBFAIR 
+	where JOBFAIR_CODE = #jobfairCode#
+</select>
+
+
+<insert id="jobfairInsert" parameterClass="vo.JobfairVO">
+	INSERT INTO JOBFAIR( JOBFAIR_CODE, JOBFAIR_GROUP, JOBFAIR_TITLE, 
+		JOBFAIR_STARTDATE, JOBFAIR_ENDDATE, JOBFAIR_PLACE, 
+		COMPANY_CODE, COMPANY_NAME )
+	VALUES( 
+		'R'||NO_R.nextval,
+<!--	'R'||lpad(NO_R.nextval,4,'0')  R0001이런식으로할떄-->
+		#jobfairGroup#, #jobfairTitle#, 
+		#jobfairStartdate#, #jobfairEnddate#, #jobfairPlace#, 
+		#companyCode#, #companyName# )	
+</insert>
+
+<update id="updateJobfair" parameterClass="vo.JobfairVO">
+	UPDATE JOBFAIR SET 
+		JOBFAIR_GROUP=#jobfairGroup#,
+		JOBFAIR_TITLE=#jobfairTitle#,
+		JOBFAIR_STARTDATE=to_date(#jobfairStartdate#,'YYYY-MM-DD HH24:MI:SS'),
+		JOBFAIR_ENDDATE=to_date(#jobfairEnddate#,'YYYY-MM-DD HH24:MI:SS'),
+		JOBFAIR_PLACE=#jobfairPlace#,
+		COMPANY_CODE=#companyCode#,
+		COMPANY_NAME=#companyName#
+	WHERE JOBFAIR_CODE = #jobfairCode#
+</update>
+
+<delete id="jobfairDelete" parameterClass="String">
+	DELETE FROM JOBFAIR 
+	WHERE JOBFAIR_CODE = #jobfairCode#
+</delete>
+
+
+</sqlMap>

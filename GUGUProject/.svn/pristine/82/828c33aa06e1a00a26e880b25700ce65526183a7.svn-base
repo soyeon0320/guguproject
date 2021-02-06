@@ -1,0 +1,76 @@
+package serviceImpl;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import com.ibatis.sqlmap.client.SqlMapClient;
+import dao.CareerDAO;
+import daoImpl.CareerDAOImpl;
+import service.CareerService;
+import util.SqlMapClientFactory;
+import vo.CareerVO;
+
+public class CareerServiceImpl implements CareerService {
+	private static CareerService careerService;
+	private CareerDAO careerDao;
+	private SqlMapClient smc;
+	
+	public static CareerService getInstance() {
+		if(careerService==null) {
+			careerService = new CareerServiceImpl();
+		}
+		return careerService;
+	}
+	
+	public CareerServiceImpl() {
+		careerDao = CareerDAOImpl.getInstance();
+		smc = SqlMapClientFactory.getInstance();
+	}
+
+	@Override
+	public List<CareerVO> ResumeCareerSelect(CareerVO cv) {
+		List<CareerVO> careerList = Collections.EMPTY_LIST;
+		try {
+			careerList = careerDao.ResumeCareerSelect(smc, cv);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return careerList;
+	}
+
+	@Override
+	public int ResumeCareerInsert(CareerVO cv) {
+		int resCnt = 0;
+		try {
+			smc.startTransaction();
+			resCnt = careerDao.ResumeCareerInsert(smc, cv);
+			smc.commitTransaction();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				smc.endTransaction();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}finally {
+			try {
+				smc.endTransaction();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return resCnt;
+	}
+
+	@Override
+	public int ResumeCareerUpdate(CareerVO cv) {
+		int resCnt = 0;
+		try {
+			resCnt = careerDao.ResumeCareerUpdate(smc, cv);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return resCnt;
+	}
+}

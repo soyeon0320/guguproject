@@ -1,0 +1,110 @@
+<%@page import="vo.JobfairVO"%>
+<%@page import="vo.PagingVO"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+   pageEncoding="UTF-8"%>
+<%
+	PagingVO pageVO = (PagingVO)request.getAttribute("pageVO");	
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+<meta name="description" content="This is an example dashboard created using build-in elements and components.">
+<meta name="msapplication-tap-highlight" content="no">
+<link href="/GUGUProject/assets/css/main.css" rel="stylesheet">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>채용설명회 목록</title>
+<style>
+
+.top-notice-box { 
+    padding: 22px 0;
+/*     padding-top: 5px;  */
+    background-color: #e8f4ff; 
+    border-left: 1px solid #e0e0e0; 
+    border-right: 1px solid #e0e0e0;
+    text-align: center; 
+ } 
+ 
+</style>
+</head>
+<body>
+ <div class="col-lg-15">
+   <div class="main-card mb-3 card">
+    <div class="card-body"><h5 class="card-title"></h5>
+     <h3 style="text-align: center; font-weight: bold;">채용설명회 일정
+     </h3>
+     <div class="col-md-6">전체 <%=pageVO.getTotalCount()%>건&emsp;</div>
+		<div class="top-notice-box">
+			<h6>최근 <i>코로나바이러스감염증-19</i>로 인하여 일정이 갑작스레 취소, 변경될 수 있습니다.    이점 양해 바랍니다!</h6>
+		</div>
+	<table class="mb-0 table table-hover"> 
+	   <thead>
+	      <tr>
+	      	<th>순번</th>
+	         <th>분류</th>
+	         <th>설명회명</th>
+	         <th>일시</th>
+	         <th>장소</th>
+	<!--     <th>삭제</th>          -->
+	      </tr>
+	    </thead> 
+	   
+      <%
+         List<JobfairVO> jobList = (List<JobfairVO>)request.getAttribute("jobfairList");
+         if(jobList!=null && !jobList.isEmpty()){ //'<td colspan="4">내용이 없습니다.</td>뿌려주기 위함'
+      %>
+	     	 <% 
+	     	 
+				int rowNum = pageVO.getTotalCount() - (pageVO.getCurrentPageNo()-1)*10;
+	     	 	if (jobList.size() > 0) {
+	     			for (int idx = 0; idx < jobList.size(); idx++) {
+				// 게시판 목록 번호 생성 => 전체 게시글 수 - 현재페이지번호-1 * 10 = 시작번호 => 제목 로우 하나 생성할때마다 1씩 마이너스
+			%>
+			<tbody>
+	         <tr>
+	         	<td scope="row"><%=rowNum%></td>
+<%-- 	         	<td scope="row"><%=idx + 1%></td> --%>
+	            <td><%= jobList.get(idx).getJobfairGroup() %></td>
+	            <td><%= jobList.get(idx).getJobfairTitle() %></td>
+	            <td><%= jobList.get(idx).getJobfairStartdate() %>~<%= jobList.get(idx).getJobfairEnddate()%></td>
+	            <td><%= jobList.get(idx).getJobfairPlace() %></td>
+				
+	         </tr>
+	         </tbody>
+	         	<%
+	         	rowNum--;
+	     			}
+	     			
+	     		%>
+		      <%
+		      	} 
+		      %>
+
+	<% } else {%>
+		         <tr>
+		            <td colspan="4">내용이 없습니다.</td>
+		         </tr>
+	      <% } %>
+			
+			</table>
+			<div style="text-align: center;">
+				<ul class="pagination" style="margin-left: 50%;">
+					<% if(pageVO.getTotalCount() > 0){//1 %>
+						<% if(pageVO.getFirstPageNo() > pageVO.getPageSize()) {//2 %>
+								<li class="page-item"><a href="list.do?pageNo=<%= pageVO.getFirstPageNo()-1 %>">[&lt;]</a></li>
+						<% }//2 %>
+						<% for(int pNo=pageVO.getFirstPageNo(); pNo<=pageVO.getLastPageNo(); pNo++){//3 %>
+								<li class="page-item"><a href="list.do?pageNo=<%= pNo %>"><%= pNo %></a></li>
+						<% }//3 %>
+						<% if(pageVO.getLastPageNo() < pageVO.getTotalPageCount()){//4 %>
+								<li class="page-item"><a href="list.do?pageNo=<%= pageVO.getFirstPageNo() + pageVO.getPageSize() %>">[&gt;]</a></li>
+						<% }//4 %>
+				</ul>
+					<% }//1 %>
+			</div>
+      </div>
+      </div>
+      </div>
+</body>
+</html>

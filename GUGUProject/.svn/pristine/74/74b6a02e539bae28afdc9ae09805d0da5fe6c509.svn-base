@@ -1,0 +1,23 @@
+package dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import vo.CommentVO;
+import vo.FunBoardVO;
+import vo.PagingVO;
+
+public interface CommentDAO {
+	public List<CommentVO> CommentAllSelect(CommentVO cv) throws SQLException;
+	
+	public int CommentInsert(CommentVO cv) throws SQLException;
+	
+	public int CommentDelete(String commentCode) throws SQLException;
+	
+	public int CommentUpdate(CommentVO cv) throws SQLException;
+	
+	public int CommentAllSelectCount() throws SQLException;
+	
+}

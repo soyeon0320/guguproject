@@ -1,0 +1,31 @@
+package handler.index;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import common.CommonHandler;
+import service.FaqService;
+import serviceImpl.FaqServiceImpl;
+import vo.FaqVO;
+
+public class FaqHandler implements CommonHandler{
+	
+	private static final String VIEW_PAGE = "/WEB-INF/index.jsp";
+	
+	@Override
+	public boolean RedirectYn(HttpServletRequest req) {
+		return false;
+	}
+
+	@Override
+	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		FaqService fs = FaqServiceImpl.getInstance();
+		List<FaqVO> list = fs.faqList();
+	
+		req.setAttribute("list", list);
+		return VIEW_PAGE;
+	}
+
+}

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="jobnews">
+
+<resultMap class="JobNewsVO" id="jobnewsMap">
+	<result property="jobNewsCode" 		column="JOBNEWS_CODE"/>
+	<result property="jobNewsTitle"     	column="JOBNEWS_TITLE"/>
+	<result property="jobNewsContent"     	column="JOBNEWS_CONTENT"/>
+	<result property="jobNewsUrl"    		column="JOBNEWS_URL"/>
+	<result property="jobNewsRegName"     	column="JOBNEWS_REGNAME"/>
+	<result property="jobNewsEditor"       column="JOBNEWS_EDITOR"/>
+    <result property="jobNewsCopyright"    column="JOBNEWS_COPYRIGHT"/>
+	<result property="jobNewsRegDate"      column="JOBNEWS_REGDATE"/>
+	<result property="adminId"      column="ADMIN_ID"/>
+</resultMap>
+
+<select id="JobnewsAllSelect" parameterClass="JobNewsVO" resultMap="jobnewsMap">
+SELECT * FROM(
+	select 
+        JOBNEWS_CODE,
+        JOBNEWS_CONTENT,
+        JOBNEWS_COPYRIGHT,
+        JOBNEWS_EDITOR,
+        JOBNEWS_REGDATE,
+        JOBNEWS_REGNAME,
+        JOBNEWS_TITLE,
+        JOBNEWS_URL,
+        ADMIN_ID
+ from JOBNEWS
+ where JOBNEWS_GUBUN=#jobNewsGubun#
+ ORDER BY JOBNEWS_REGDATE DESC
+ ) 
+</select>
+
+<select id="getSearchJobnews" parameterClass="JobNewsVO" resultMap="jobnewsMap">
+	 select 
+        JOBNEWS_CODE,
+        JOBNEWS_CONTENT,
+        JOBNEWS_COPYRIGHT,
+        JOBNEWS_EDITOR,
+        JOBNEWS_REGDATE,
+        JOBNEWS_REGNAME,
+        JOBNEWS_TITLE,
+        JOBNEWS_URL,
+        JOBNEWS_GUBUN,
+        ADMIN_ID
+ from JOBNEWS
+ where JOBNEWS_CODE = #jobNewsCode#
+</select>
+
+<!-- <insert id="jobnewsInsert" parameterClass="JobNewsVO"> -->
+<!-- 	INSERT INTO JOBNEWS -->
+<!-- 	( -->
+<!-- 	    JOBNEWS_CODE      , -->
+<!-- 	    JOBNEWS_TITLE     , -->
+<!-- 	    JOBNEWS_CONTENT   , -->
+<!-- 	    JOBNEWS_URL       , -->
+<!-- 	    JOBNEWS_REGNAME   , -->
+<!-- 	    JOBNEWS_EDITOR    , -->
+<!-- 	    JOBNEWS_COPYRIGHT , -->
+<!-- 	    JOBNEWS_REGDATE    -->
+	    
+<!-- 	) -->
+<!-- 	VALUES -->
+<!-- 	( -->
+<!-- 	     'E' || JOBNEWS_SEQ.NEXTVAL, -->
+<!-- 	     #jobNewsTitle#, -->
+<!-- 	     #jobNewsContent#, -->
+<!-- 	     #jobNewsUrl#, -->
+<!-- 	     #jobNewsRegName#, -->
+<!-- 	     #jobNewsEditor#, -->
+<!-- 	     #jobNewsCopyright#, -->
+<!-- 	     SYSDATE -->
+<!-- 	)	  -->
+<!-- </insert> -->
+
+<insert id="jobnewsInsert" parameterClass="JobNewsVO">
+	INSERT INTO JOBNEWS( 
+		JOBNEWS_CODE,
+        JOBNEWS_CONTENT,
+        JOBNEWS_COPYRIGHT,
+        JOBNEWS_EDITOR,
+        JOBNEWS_REGDATE,
+        JOBNEWS_REGNAME,
+        JOBNEWS_TITLE,
+        JOBNEWS_URL,
+        JOBNEWS_GUBUN,
+        ADMIN_ID)
+	VALUES('E'||NO_E.nextval,#jobNewsContent#,
+        #jobNewsCopyright#, #jobNewsEditor#,
+		to_date(sysdate,'yyyy.mm.dd hh24:mi'),
+		'관리자', #jobNewsTitle#,
+		#jobNewsUrl#, #jobNewsGubun#,'index0327')
+</insert>
+
+
+<!-- <update id="jobnewsUpdate" parameterClass="JobNewsVO"> -->
+<!-- 	UPDATE JOBNEWS -->
+<!-- 	   SET JOBNEWS_TITLE            = #jobNewsTitle#,     -->
+<!-- 	   	   JOBNEWS_CONTENT          = #jobNewsContent#,   -->
+<!-- 	   	   JOBNEWS_URL              = #jobNewsUrl#,       -->
+<!-- 	   	   JOBNEWS_REGNAME          = #jobNewsRegName#,   -->
+<!-- 	   	   JOBNEWS_EDITOR           = #jobNewsEditor#,    -->
+<!-- 	   	   JOBNEWS_COPYRIGHT        = #jobNewsCopyright#, -->
+<!-- 	   	   JOBNEWS_REGDATE          = #jobNewsRegDate#,   -->
+<!-- 	 WHERE JOBNEWS_CODE 	        = #jobNewsCode# -->
+<!-- </update> -->
+
+<update id="updateJobnews" parameterClass="JobnewsVO">
+	UPDATE JOBNEWS SET 
+		JOBNEWS_CODE = #jobNewsCode#,     
+        JOBNEWS_CONTENT = #jobNewsContent#,  
+        JOBNEWS_COPYRIGHT = #jobNewsCopyright#,
+        JOBNEWS_EDITOR = #jobNewsEditor#,   
+        JOBNEWS_REGDATE = to_date(sysdate,'yyyy.mm.dd hh24:mi'),  
+        JOBNEWS_REGNAME = '관리자',  
+        JOBNEWS_TITLE = #jobNewsTitle#,    
+        JOBNEWS_URL = #jobNewsUrl#,
+        JOBNEWS_GUBUN = #jobNewsGubun#,
+        ADMIN_ID = 'index0327'     
+	WHERE JOBNEWS_CODE = #jobNewsCode#
+</update>
+
+<delete id="jobnewsDelete" parameterClass="String">
+
+	DELETE FROM JOBNEWS WHERE JOBNEWS_CODE = #jobNewsCode#
+
+</delete>
+</sqlMap>

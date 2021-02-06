@@ -1,0 +1,11 @@
+package service;
+
+import java.util.List;
+
+import vo.BoardManagerVO;
+
+public interface BoardManagerService {
+	
+	public List<BoardManagerVO> searchList(String searchName);	
+	
+}

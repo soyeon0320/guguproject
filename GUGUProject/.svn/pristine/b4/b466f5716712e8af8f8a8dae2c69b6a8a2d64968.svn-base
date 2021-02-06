@@ -1,0 +1,53 @@
+package handler.funboard;
+
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import common.CommonHandler;
+import service.CommentService;
+import service.FunBoardService;
+import serviceImpl.CommentServiceImpl;
+import serviceImpl.FunBoardServiceImpl;
+import vo.CommentVO;
+import vo.FunBoardVO;
+
+public class FunBoardSelectHandler implements CommonHandler{
+	private static final String VIEW_PAGE_GO = "/WEB-INF/view/funboard/funboardSelect.jsp";
+
+	@Override
+	public boolean RedirectYn(HttpServletRequest req) {
+		return false;
+	}
+
+	@Override
+	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		String funBoardCode = req.getParameter("funBoardCode");
+		
+		FunBoardVO fbv = new FunBoardVO();
+		fbv.setCode(funBoardCode);
+		
+		FunBoardService funBoardService = FunBoardServiceImpl.getInstance();
+		List<FunBoardVO> funBoardList = funBoardService.FunBoardSelect(fbv);
+		
+		req.setAttribute("funBoardVO", funBoardList.get(0));
+		
+		CommentService commentService = CommentServiceImpl.getInstance();
+		
+		if(funBoardList.get(0).getCode() != null || funBoardList.get(0).getCode() != "") {
+			CommentVO cv = new CommentVO();
+			cv.setFunBoardCode(funBoardList.get(0).getCode());
+			
+			String content = req.getParameter("content");
+			String regDate = req.getParameter("regDate");
+			String regName = req.getParameter("regName");
+			cv.setContent(content);
+			cv.setRegDate(regDate);
+			cv.setRegName(regName);
+			
+			List<CommentVO> commentList = commentService.CommentSelect(cv);
+			req.setAttribute("commentList", commentList);
+		}
+		return VIEW_PAGE_GO;
+	}
+
+}

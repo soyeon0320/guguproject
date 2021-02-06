@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="jobfair">
+
+<resultMap class="JobfairVO" id="jobfairMap">
+
+	<result property="jobfairCode" column="JOBFAIR_CODE"/>
+	<result property="jobfairGroup" column="JOBFAIR_GROUP"/>
+	<result property="jobfairTitle" column="JOBFAIR_TITLE"/>
+	<result property="jobfairStartdate" column="JOBFAIR_STARTDATE"/>
+	<result property="jobfairEnddate" column="JOBFAIR_ENDDATE"/>
+	<result property="jobfairPlace" column="JOBFAIR_PLACE"/>
+	<result property="companyCode" column="COMPANY_CODE"/>
+	<result property="companyName" column="COMPANY_NAME"/>
+
+</resultMap>
+
+<select id="JobfairAllSelect" resultMap="jobfairMap">
+<!-- 	SELECT JOBFAIR_CODE,  -->
+<!-- 			JOBFAIR_GROUP,  -->
+<!-- 			JOBFAIR_TITLE,  -->
+<!-- 			JOBFAIR_STARTDATE,  -->
+<!-- 			JOBFAIR_ENDDATE,  -->
+<!-- 			JOBFAIR_PLACE,  -->
+<!-- 			COMPANY_CODE,  -->
+<!-- 			COMPANY_NAME  -->
+<!-- 	FROM JOBFAIR  -->
+<!-- 	ORDER BY JOBFAIR_STARTDATE DESC -->
+
+<!-- 페이징처리 -->
+  		 SELECT AA.*
+      	 FROM (SELECT B.*,                    <!-- SELECT B.* : INTRODUCTION 테이블에서 memberId에 해당하는 데이터 추출 후  INTRODUCTION_CODE 역순으로 정렬 한(가장 최근에 작성한게 가장 먼저 오도록) 데이터  -->
+                      ROWNUM AS rnum              <!-- 위 데이터에 ROWNUM 부여 --> 
+                FROM (SELECT A.*
+                       FROM JOBFAIR A 
+                      ORDER BY TO_NUMBER(SUBSTR(A.JOBFAIR_CODE,2)) DESC) B) AA
+     	 WHERE AA.rnum BETWEEN #firstRectNo# and #lastRectNo#     <!-- 생성된 ROWNUM을 토대로 페이징 처리 --> 
+
+</select>
+
+<select id="getSearchJobfair" resultMap="jobfairMap">
+	SELECT JOBFAIR_CODE, 
+		   JOBFAIR_GROUP, 
+		   JOBFAIR_TITLE, 
+		   JOBFAIR_STARTDATE,
+		   JOBFAIR_ENDDATE,
+		   JOBFAIR_PLACE, 
+		   COMPANY_CODE,
+		   COMPANY_NAME 
+	FROM JOBFAIR 
+	where JOBFAIR_CODE = #jobfairCode#
+</select>
+
+<!-- 						JOBFAIR_STARTDATE=to_date(#jobfairStartdate#,'YYYY-MM-DD HH24:MI:SS'),  -->
+<!-- 						JOBFAIR_ENDDATE=to_date(#jobfairEnddate#,'YYYY-MM-DD HH24:MI:SS'),  -->
+
+<insert id="jobfairInsert" parameterClass="vo.JobfairVO">
+	INSERT INTO JOBFAIR( JOBFAIR_CODE, 
+						JOBFAIR_GROUP, 
+						JOBFAIR_TITLE, 
+						JOBFAIR_STARTDATE, 
+						JOBFAIR_ENDDATE, 
+						JOBFAIR_PLACE, 
+						COMPANY_CODE, 
+						COMPANY_NAME )
+	VALUES( 
+		'R'||NO_R.nextval,
+<!--	'R'||lpad(NO_R.nextval,4,'0')  R0001이런식으로할떄-->
+		#jobfairGroup#, #jobfairTitle#, 
+		#jobfairStartdate#, #jobfairEnddate#, #jobfairPlace#, 
+		#companyCode#, #companyName# )	
+</insert>
+
+<update id="jobfairUpdate" parameterClass="vo.JobfairVO">
+	UPDATE JOBFAIR SET 
+		JOBFAIR_GROUP=#jobfairGroup#,
+		JOBFAIR_TITLE=#jobfairTitle#,
+		JOBFAIR_STARTDATE=#jobfairStartdate#,
+		JOBFAIR_ENDDATE=#jobfairEnddate#,
+		JOBFAIR_PLACE=#jobfairPlace#,
+		COMPANY_CODE=#companyCode#,
+		COMPANY_NAME=#companyName#
+	WHERE JOBFAIR_CODE = #jobfairCode#
+</update>
+
+<delete id="jobfairDelete" parameterClass="String">
+	DELETE FROM JOBFAIR 
+	WHERE JOBFAIR_CODE = #jobfairCode#
+</delete>
+
+<select id="JobfairAllSelectCount" resultClass="int">
+	SELECT COUNT(*) FROM JOBFAIR
+</select>
+
+
+</sqlMap>

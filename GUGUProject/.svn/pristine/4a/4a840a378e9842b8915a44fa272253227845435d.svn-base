@@ -1,0 +1,50 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>아이디 중복확인</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+<meta name="description" content="This is an example dashboard created using build-in elements and components.">
+<meta name="msapplication-tap-highlight" content="no">
+<link href="/GUGUProject/assets/css/main.css" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/new_main.css">
+<script
+	src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<style>
+</style>
+<script type="text/javascript">
+	function idCheck(event) {
+		if (frm.memberId.value == "") {
+			alert("아이디를 입력하세요");
+			frm.memberId.focus();
+			return;
+		}
+		
+		frm.submit();
+		opender.document.getElementById("memberId").innerText = frm.memberId.value;
+		alert(frm.memberId.value);
+		// 		window.close();
+		// 		event.preventDefault();
+	}
+</script>
+<body>
+	<form name="frm" method="post">
+		<div>
+			<h3 class="join_title" style="text-align: center;">
+				<label for="id">아이디 중복체크</label>
+			</h3>
+			<span class="box int_id"
+				style="width: 50%; margin-left: 10%; float: left;"> <input
+				type="text" name="memberId" id="checkId" class="int" maxlength="20">
+			</span>
+			<button class="mb-2 mr-2 btn btn-success"
+				style="width: 30%; height: 50px;" onclick="idCheck(event)">확인</button>
+			<span class="error_next_box"></span>
+		</div>
+	</form>
+</body>
+</html>

@@ -1,0 +1,49 @@
+package daoImpl;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import com.ibatis.sqlmap.client.SqlMapClient;
+import dao.LicenseDAO;
+import util.SqlMapClientFactory;
+import vo.LicenseVO;
+
+public class LicenseDAOImpl implements LicenseDAO{
+	private static LicenseDAO licenseDao;
+	
+	public LicenseDAOImpl() {
+		
+	}
+	
+	public static LicenseDAO getInstance() {
+		if (licenseDao==null) {
+			licenseDao = new LicenseDAOImpl();
+		}
+		return licenseDao;
+	}
+
+	@Override
+	public List<LicenseVO> ResumeLicenseSelect(SqlMapClient smc, LicenseVO lv) throws SQLException {
+		List<LicenseVO> licenseList = new ArrayList<LicenseVO>();
+		licenseList = smc.queryForList("resume.ResumeLicenseSelect", lv);
+		return licenseList;
+	}
+
+	@Override
+	public int ResumeLicenseInsert(SqlMapClient smc, LicenseVO lv) throws SQLException {
+		int resCnt = 0;
+		Object obj = smc.insert("resume.ResumeLicenseInsert", lv);
+		if(obj==null) {
+			resCnt = 1;
+		}
+		return resCnt;
+	}
+
+	@Override
+	public int ResumeLicenseUpdate(SqlMapClient smc, LicenseVO lv) throws SQLException {
+		int resCnt = smc.update("resume.ResumeLicenseUpdate", lv);
+		return resCnt;
+	}
+	
+}

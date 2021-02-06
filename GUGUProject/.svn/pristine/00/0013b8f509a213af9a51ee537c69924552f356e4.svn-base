@@ -1,0 +1,10 @@
+package service;
+
+import java.util.List;
+import vo.CareerVO;
+
+public interface CareerService {
+	public List<CareerVO> ResumeCareerSelect(CareerVO cv);
+	
+	public int ResumeCareerInsert(CareerVO cv);
+}

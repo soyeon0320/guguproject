@@ -1,0 +1,42 @@
+package handler.inquery;
+
+import java.util.Scanner;
+
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.server.ServerEndpoint;
+
+@ServerEndpoint("/websocket")
+public class WebSocket {
+	
+	@OnOpen
+	public void handleOpen() {
+		System.out.println("클라이언트 접속");
+	}
+	
+	@OnMessage
+	public String handleMessage(String message) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("receive from client : " + message);
+
+		
+		String replyMessage = sc.nextLine();
+		
+		return replyMessage;
+	}
+	
+	@OnClose
+	public void hadleClose() {
+		System.out.println("클라이언트 접속해제");
+	}
+	
+	@OnError
+	public void handleError(Throwable e) {
+		System.out.println("소켓 핸들링 중 에러 발생");
+		e.printStackTrace();
+	}
+}

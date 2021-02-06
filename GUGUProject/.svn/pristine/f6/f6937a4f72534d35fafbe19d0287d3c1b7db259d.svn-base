@@ -1,0 +1,54 @@
+package handler.inquery;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
+
+@ServerEndpoint("/websocket")
+public class WebSocket {
+	
+	private static List<Session> sessionUsers = Collections.synchronizedList(new ArrayList<>()); 
+	
+	@OnOpen
+	public void handleOpen(Session userSession) {
+		System.out.println(userSession);
+		sessionUsers.add(userSession);
+		System.out.println("클라이언트 접속");
+	}
+	
+	@OnMessage
+	public void handleMessage(String message, Session userSession) throws IOException {
+		System.out.println("receive msg : " + message);
+		
+		for (Session session : sessionUsers) {
+			if (session == userSession) {
+				continue;
+			}else {
+				System.out.println("메시지 전송");
+				session.getBasicRemote().sendText(message);
+			}
+		}
+		
+	}
+	
+	@OnClose
+	public void hadleClose(Session userSession) {
+		sessionUsers.remove(userSession);
+		System.out.println("클라이언트 접속해제");
+	}
+	
+	@OnError
+	public void handleError(Throwable e) {
+		System.out.println("소켓 핸들링 중 에러 발생");
+		e.printStackTrace();
+	}
+}

@@ -1,0 +1,25 @@
+package handler.faq;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import common.CommonHandler;
+
+public class deleteHandler implements CommonHandler{
+
+	private static final String VIER_PAGE ="/WEB-INF/view/faq/AdminFaq.jsp";
+	
+	@Override
+	public boolean RedirectYn(HttpServletRequest req) {
+		return false;
+	}
+
+	@Override
+	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		
+		String list = req.getParameter("code");
+		System.out.println(list);
+		
+		return VIER_PAGE;
+	}
+	
+}

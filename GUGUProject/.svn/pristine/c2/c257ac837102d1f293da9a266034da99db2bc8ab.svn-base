@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="boardManager">
+
+	<resultMap class="BoardManagerVO" id="mangerMap">
+		<result property="c" column="GORY_C"></result>
+		<result property="f" column="GORY_F"></result>
+		<result property="b" column="GORY_B"></result>
+		<result property="r" column="GORY_R"></result>
+		<result property="e" column="GORY_E"></result>
+		<result property="n" column="GORY_N"></result>
+
+		<!-- company -->
+		<!-- <result property="code" column="COMPANY_CODE"/> -->
+		<result property="name" column="COMPANY_NAME" />
+		<result property="title" column="COMPANY_TITLE" />
+		<result property="career" column="COMPANY_CAREER" />
+		<result property="educstion" column="COMPANY_EDUCSTION" />
+		<result property="employment" column="COMPANY_EMPLOYMENT" />
+		<result property="salary" column="COMPANY_SALARY" />
+		<result property="area" column="COMPANY_AREA" />
+		<result property="business" column="COMPANY_BUSINESS" />
+		<result property="employees" column="COMPANY_EMPLOYEES" />
+		<result property="estab" column="COMPANY_ESTAB" />
+		<result property="homepage" column="COMPANY_HOMEPAGE" />
+		<result property="regdate" column="COMPANY_REGDATE" />
+		<result property="lastdate" column="COMPANY_LASTDATE" />
+
+		<!-- faq -->
+		<!-- <result property="code" column="FAQ_CODE"/> -->
+		<result property="question" column="FAQ_QUESTION" />
+		<result property="answer" column="FAQ_ANSWER" />
+
+		<!-- funBoard -->
+<!-- 		<result property="code" column="FUNBOARD_CODE" /> -->
+		<result property="title" column="FUNBOARD_TITLE" />
+		<result property="content" column="FUNBOARD_CONTENT" />
+		<result property="regDate" column="FUNBOARD_REGDATE" />
+		<result property="memId" column="FUNBOARD_MEMID" />
+
+		<!-- jobfair -->
+<!-- 		<result property="jobfairCode" column="JOBFAIR_CODE" /> -->
+		<result property="jobfairGroup" column="JOBFAIR_GROUP" />
+		<result property="jobfairTitle" column="JOBFAIR_TITLE" />
+		<result property="jobfairStartdate" column="JOBFAIR_STARTDATE" />
+		<result property="jobfairEnddate" column="JOBFAIR_ENDDATE" />
+		<result property="jobfairPlace" column="JOBFAIR_PLACE" />
+		<result property="companyCode" column="COMPANY_CODE" />
+		<result property="companyName" column="COMPANY_NAME" />
+
+		<!-- jobNews -->
+<!-- 		<result property="jobNewsCode" column="JOBNEWS_CODE" /> -->
+		<result property="jobNewsTitle" column="JOBNEWS_TITLE" />
+		<result property="jobNewsContent" column="JOBNEWS_CONTENT" />
+		<result property="jobNewsUrl" column="JOBNEWS_URL" />
+		<result property="jobNewsRegName" column="JOBNEWS_REGNAME" />
+		<result property="jobNewsEditor" column="JOBNEWS_EDITOR" />
+		<result property="jobNewsCopyright" column="JOBNEWS_COPYRIGHT" />
+		<result property="jobNewsRegDate" column="JOBNEWS_REGDATE" />
+		<!-- <result property="jobNewsGubun" column="JOBNEWS_GUBUN"/> -->
+
+		<!-- Notis -->
+<!-- 		<result property="code" column="NOTIS_CODE" /> -->
+		<result property="title" column="NOTIS_TITLE" />
+		<result property="content" column="NOTIS_CONTENT" />
+		<result property="regDate" column="NOTIS_REGDATE" />
+		<result property="adminId" column="ADMIN_ID" />
+
+	</resultMap>
+
+	<!-- company -->
+	<resultMap class="CompanyVO" id="BoardManagerVO"
+		extends="mangerMap">
+<!-- 		<result property="code" column="COMPANY_CODE" /> -->
+		<result property="name" column="COMPANY_NAME" />
+		<result property="title" column="COMPANY_TITLE" />
+		<result property="career" column="COMPANY_CAREER" />
+		<result property="educstion" column="COMPANY_EDUCSTION" />
+		<result property="employment" column="COMPANY_EMPLOYMENT" />
+		<result property="salary" column="COMPANY_SALARY" />
+		<result property="area" column="COMPANY_AREA" />
+		<result property="business" column="COMPANY_BUSINESS" />
+		<result property="employees" column="COMPANY_EMPLOYEES" />
+		<result property="estab" column="COMPANY_ESTAB" />
+		<result property="homepage" column="COMPANY_HOMEPAGE" />
+		<result property="regdate" column="COMPANY_REGDATE" />
+		<result property="lastdate" column="COMPANY_LASTDATE" />
+	</resultMap>
+
+	<!-- faq -->
+	<resultMap class="FaqVO" id="BoardManagerVO"
+		extends="mangerMap">
+<!-- 		<result property="code" column="FAQ_CODE" /> -->
+		<result property="question" column="FAQ_QUESTION" />
+		<result property="answer" column="FAQ_ANSWER" />
+		<result property="adminId" column="ADMIN_ID" />
+		<result property="adminName" column="ADMIN_NAME" />
+	</resultMap>
+
+	<!-- funBoard -->
+	<resultMap class="FunBoardVO" id="BoardManagerVO"
+		extends="mangerMap">
+<!-- 		<result property="code" column="FUNBOARD_CODE" /> -->
+		<result property="title" column="FUNBOARD_TITLE" />
+		<result property="content" column="FUNBOARD_CONTENT" />
+		<result property="regDate" column="FUNBOARD_REGDATE" />
+		<result property="memId" column="FUNBOARD_MEMID" />
+	</resultMap>
+
+	<!-- jobfair -->
+	<resultMap class="JobfairVO" id="BoardManagerVO"
+		extends="mangerMap">
+<!-- 		<result property="jobfairCode" column="JOBFAIR_CODE" /> -->
+		<result property="jobfairGroup" column="JOBFAIR_GROUP" />
+		<result property="jobfairTitle" column="JOBFAIR_TITLE" />
+		<result property="jobfairStartdate" column="JOBFAIR_STARTDATE" />
+		<result property="jobfairEnddate" column="JOBFAIR_ENDDATE" />
+		<result property="jobfairPlace" column="JOBFAIR_PLACE" />
+		<result property="companyCode" column="COMPANY_CODE" />
+		<result property="companyName" column="COMPANY_NAME" />
+	</resultMap>
+
+	<!-- jobNews -->
+	<resultMap class="JobNewsVO" id="BoardManagerVO"
+		extends="mangerMap">
+<!-- 		<result property="jobNewsCode" column="JOBNEWS_CODE" /> -->
+		<result property="jobNewsTitle" column="JOBNEWS_TITLE" />
+		<result property="jobNewsContent" column="JOBNEWS_CONTENT" />
+		<result property="jobNewsUrl" column="JOBNEWS_URL" />
+		<result property="jobNewsRegName" column="JOBNEWS_REGNAME" />
+		<result property="jobNewsEditor" column="JOBNEWS_EDITOR" />
+		<result property="jobNewsCopyright" column="JOBNEWS_COPYRIGHT" />
+		<result property="jobNewsRegDate" column="JOBNEWS_REGDATE" />
+		<!-- <result property="jobNewsGubun" column="JOBNEWS_GUBUN"/> -->
+		<result property="adminId" column="ADMIN_ID" />
+	</resultMap>
+
+	<!-- Notis -->
+	<resultMap class="NotisVO" id="BoardManagerVO"
+		extends="mangerMap">
+<!-- 		<result property="code" column="NOTIS_CODE" /> -->
+		<result property="title" column="NOTIS_TITLE" />
+		<result property="content" column="NOTIS_CONTENT" />
+		<result property="regDate" column="NOTIS_REGDATE" />
+		<result property="adminId" column="ADMIN_ID" />
+	</resultMap>
+
+	<select id="list" parameterClass="BoardManagerVO">
+
+	</select>
+
+</sqlMap>
+
+
+
+
+
+
+
+

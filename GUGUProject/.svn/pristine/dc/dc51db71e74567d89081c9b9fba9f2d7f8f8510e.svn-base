@@ -1,0 +1,29 @@
+package handler.resume;
+
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import common.CommonHandler;
+import service.ResumeService;
+import serviceImpl.ResumeServiceImpl;
+import vo.ResumeVO;
+
+public class ResumeListHandler implements CommonHandler{
+	private static final String VIEW_PAGE_GO = "/WEB-INF/view/resume/resumeList.jsp";
+	
+	@Override
+	public boolean RedirectYn(HttpServletRequest req) {
+		return false;
+	}
+
+	@Override
+	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		ResumeService resumeService = ResumeServiceImpl.getInstance();
+		
+		List<ResumeVO> resumeList = resumeService.ResumeAllSelect();
+		req.setAttribute("resumeList", resumeList);
+		
+		return VIEW_PAGE_GO;
+	}
+
+}

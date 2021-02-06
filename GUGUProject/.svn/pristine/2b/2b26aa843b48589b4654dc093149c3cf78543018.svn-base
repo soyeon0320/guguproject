@@ -1,0 +1,64 @@
+package daoImpl;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import com.ibatis.sqlmap.client.SqlMapClient;
+import dao.ResumeDAO;
+import vo.PagingVO;
+import vo.ResumeVO;
+
+public class ResumeDAOImpl implements ResumeDAO{
+	private static ResumeDAO resumeDao;
+
+	public ResumeDAOImpl() {
+		
+	}
+	
+	public static ResumeDAO getInstance() {
+		if(resumeDao==null) {
+			resumeDao = new ResumeDAOImpl();
+		}
+		return resumeDao;
+	}
+	
+	@Override
+	public List<ResumeVO> ResumeAllSelect(SqlMapClient smc, PagingVO pv) throws SQLException {
+		List<ResumeVO> resumeList = new ArrayList<ResumeVO>();
+		resumeList = smc.queryForList("resume.ResumeAllSelect", pv);
+		return resumeList;
+	}
+
+	@Override
+	public List<ResumeVO> ResumeSelect(SqlMapClient smc, ResumeVO rv) throws SQLException {
+		List<ResumeVO> resumeList = new ArrayList<ResumeVO>();
+		resumeList = smc.queryForList("resume.ResumeSelect", rv);
+		return resumeList;
+	}
+
+	@Override
+	public int ResumeInsert(SqlMapClient smc, ResumeVO rv) throws SQLException {
+		int resCnt = 0;
+		Object obj = smc.insert("resume.ResumeInsert", rv);
+		if(obj==null) {
+			resCnt = 1;
+		}
+		return resCnt;
+	}
+
+	@Override
+	public int ResumeAllSelectCount(SqlMapClient smc) throws SQLException {
+		int resCnt = (int)smc.queryForObject("resume.ResumeAllSelectCount");
+		return resCnt;
+	}
+
+	@Override
+	public int ResumeDelete(SqlMapClient smc, String resumeCode) throws SQLException {
+		int resCnt = 0;
+		resCnt = smc.delete("resume.ResumeDelete", resumeCode);
+		return resCnt;
+	}
+
+
+	
+}

@@ -1,0 +1,108 @@
+package handler.resume;
+
+import java.io.Console;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.swing.plaf.synth.SynthSeparatorUI;
+
+import common.CommonHandler;
+import service.MemberService;
+import service.ResumeService;
+import serviceImpl.MemberServiceImpl;
+import serviceImpl.ResumeServiceImpl;
+import vo.MemberVO;
+import vo.ResumeVO;
+
+public class ResumeInsertHandler implements CommonHandler {
+	private static final String VIEW_PAGE_GO = "/WEB-INF/view/resume/resumeInsert.jsp";
+	
+	@Override
+	public boolean RedirectYn(HttpServletRequest req) {
+		if(req.getMethod().equals("GET")) {
+			return false;
+		}else {
+			return true;
+		}
+	}
+
+	@Override
+	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		if(req.getMethod().equals("GET")) {
+			memberInfo(req, res);
+			return VIEW_PAGE_GO;
+		}else if(req.getMethod().equals("POST")) {
+			memberInfo(req, res);
+			
+			String title = req.getParameter("title");
+			String schoolSection = req.getParameter("schoolSection");
+			String schoolName = req.getParameter("schoolName");
+			String schoolMajor = req.getParameter("schoolMajor");
+			if (schoolMajor=="" || schoolMajor.trim().equals("")) {
+				schoolMajor = "X";
+			}
+			double schoolScore = Double.parseDouble(req.getParameter("schoolScore"));
+			System.out.println("@@"+schoolScore);
+			String schoolStartDate = req.getParameter("schoolStartDate");
+			String schoolEndDate = req.getParameter("schoolEndDate");
+			String schoolEndYn = req.getParameter("schoolEndYn");
+			String imgSrc = req.getParameter("imgSrc");
+			String imgName = req.getParameter("imgName");
+			String memberId = req.getParameter("memberId");
+			
+			ResumeVO rv = new ResumeVO();
+			
+			rv.setTitle(title);
+			rv.setSchoolSection(schoolSection);
+			rv.setSchoolName(schoolName);
+			rv.setSchoolMajor(schoolMajor);
+			rv.setSchoolScore(schoolScore);
+			rv.setSchoolStartDate(schoolStartDate);
+			rv.setSchoolEndDate(schoolEndDate);
+			rv.setSchoolEndYn(schoolEndYn);
+			rv.setImgSrc(imgSrc);
+			rv.setImgName(imgName);
+			rv.setMemberId(memberId);
+			
+			ResumeService resumeService = ResumeServiceImpl.getInstance();
+			
+			int resCnt = resumeService.ResumeInsert(rv);
+			
+			String message = "";
+			if(resCnt > 0) {
+				message = "success";
+			}else {
+				message = "fail";
+			}
+			
+//			getParameter(x) getParameterValues(o)
+//			licenseName, licenseGetDate, ... : key
+			String[] licenNmMap = req.getParameterValues("licenseName");
+			String[] licenDtMap =  req.getParameterValues("licenseGetDate");
+			
+			if(licenNmMap != null && licenDtMap != null) {
+				for(int i=0; i<licenNmMap.length; i++) {
+					System.out.println("testMap1 : "+licenNmMap[i]);
+					System.out.println("testMap2 : "+licenDtMap[i]);
+				}
+			}
+			
+			System.out.println(licenNmMap);
+			System.out.println(licenDtMap);
+			
+			return req.getContextPath() + "/resume/list.do?message=" + message;
+		}
+		return null;
+	}
+	
+	public void memberInfo(HttpServletRequest req, HttpServletResponse res) {
+		HttpSession session = req.getSession(false);			
+		MemberVO mv = new MemberVO();
+		mv.setMemberId((String)session.getAttribute("memberId"));
+		
+		MemberService memberService = MemberServiceImpl.getInstance();
+		List<MemberVO> memberInfo = memberService.memberSelect(mv);			
+		req.setAttribute("memberInfo", memberInfo.get(0));
+	}
+}

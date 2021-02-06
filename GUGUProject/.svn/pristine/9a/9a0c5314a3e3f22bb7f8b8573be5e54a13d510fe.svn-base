@@ -1,0 +1,157 @@
+package serviceImpl;
+
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import dao.SurveyResultDAO;
+import daoImpl.SurveyResultDAOImpl;
+import service.SurveyResultService;
+import util.SqlMapClientFactory;
+import vo.QuestionItemVO;
+import vo.SurveyQuestionVO;
+import vo.SurveyVO;
+import vo.SurveyResultVO;
+
+
+public class SurveyResultServiceImpl implements SurveyResultService{
+	private static SurveyResultService surveyResultService;
+	private SurveyResultDAO surveyResultDao;
+	private SqlMapClient smc;
+	
+	public SurveyResultServiceImpl() {
+		surveyResultDao = SurveyResultDAOImpl.getInstance();
+		smc=SqlMapClientFactory.getInstance();
+	}
+	
+	public static SurveyResultService getInstance() {
+		if(surveyResultService==null) {
+			surveyResultService = new SurveyResultServiceImpl();
+		}
+		return surveyResultService;
+	}	
+	
+	//list
+	@Override
+	public List<SurveyResultVO> surveyResultAllSelect() {
+		List<SurveyVO> surveyList = Collections.emptyList();
+		try {
+			surveyResultList = surveyResultDao.surveyResultAllSelect(smc);
+		}catch(SQLException e) {
+			throw new RuntimeException("전체 게시글 조회 중 예외 발생!!!", e);
+		}
+		return surveyResultList;
+	}
+	
+	//등록
+	@Override
+	public int surveyResultInsert(SurveyVO jv) {
+		int cnt = 0;
+		
+		try {
+			smc.startTransaction();
+			
+			cnt = surveyResultDao.surveyResultInsert(smc, jv);
+			smc.commitTransaction();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				smc.endTransaction();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		return cnt;
+	}
+	
+	//삭제
+	@Override
+	public int surveyResultDelete (String surveyCode) {
+		int cnt = 0;
+		try {
+		cnt = surveyDao.surveyDelete(smc, surveyCode); 
+		}catch (Exception e) {
+			throw new RuntimeException("삭제중 예외 발생", e);
+		}
+		return cnt;
+	}
+	
+	//상세조회
+	@Override
+	public List<SurveyVO> getSearchSurvey(SurveyVO mv) {
+		
+		List<SurveyVO> surveyList = Collections.emptyList();
+		
+		try {
+			surveyList = surveyDao.getSearchSurvey(smc, mv);
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("검색중 예외발생", e);
+		} 
+				
+		return surveyList;
+	}
+
+	//수정
+	@Override
+	public int surveyUpdate(SurveyVO jv) {
+		int cnt = 0;
+		
+		try {
+			
+			cnt = surveyDao.surveyUpdate(smc, jv);
+			
+		} catch(SQLException e) {
+			throw new RuntimeException("정보 수정중 예외발생", e);
+		}
+		return cnt;
+	}
+
+	
+	
+	
+	
+	@Override
+	public List<SurveyQuestionVO> getSurveyQuestionList(SurveyVO mv) {
+		
+		List<SurveyQuestionVO> questionList = Collections.emptyList();
+		
+		try {
+			questionList = surveyDao.getSurveyQuestionList(smc, mv);
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("검색중 예외발생", e);
+		} 
+				
+		return questionList;
+	}	
+	
+	@Override
+	public List<QuestionItemVO> getQuestionItemList(String sqCode) {
+		
+		List<QuestionItemVO> questionItemList = Collections.emptyList();
+		
+		try {
+			questionItemList = surveyDao.getQuestionItemList(smc, sqCode);
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("검색중 예외발생", e);
+		} 
+				
+		return questionItemList;
+	}	
+	
+	@Override
+	public int surveyAnswerInsert(SurveyResultVO srvo) {
+		int cnt = 0;
+		
+		cnt = surveyDao.surveyAnswerInsert(smc, srvo);
+		return cnt;
+	}	
+	
+	
+}

@@ -1,0 +1,20 @@
+package dao;
+
+import java.sql.SQLException;
+import java.util.List;
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import vo.PagingVO;
+import vo.ResumeVO;
+
+public interface ResumeDAO {
+	public List<ResumeVO> ResumeAllSelect(SqlMapClient smc, PagingVO pv) throws SQLException;
+	
+	public List<ResumeVO> ResumeSelect(SqlMapClient smc, ResumeVO rv) throws SQLException;
+	
+	public int ResumeInsert(SqlMapClient smc, ResumeVO rv) throws SQLException;
+	
+	public int ResumeAllSelectCount(SqlMapClient smc) throws SQLException;
+	
+	public int ResumeDelete(SqlMapClient smc, String resumeCode) throws SQLException;
+}

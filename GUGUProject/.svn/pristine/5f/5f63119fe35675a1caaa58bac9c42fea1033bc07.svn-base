@@ -1,0 +1,12 @@
+package service;
+
+import java.util.List;
+import vo.ResumeVO;
+
+public interface ResumeService {
+	public List<ResumeVO> ResumeAllSelect();
+	
+	public List<ResumeVO> ResumeSelect(ResumeVO rv);
+	
+	public int ResumeInsert(ResumeVO rv);
+}

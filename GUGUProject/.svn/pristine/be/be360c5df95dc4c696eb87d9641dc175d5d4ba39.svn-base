@@ -1,0 +1,35 @@
+package handler.funboard;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import common.CommonHandler;
+import service.FunBoardService;
+import serviceImpl.FunBoardServiceImpl;
+
+public class FunBoardDeleteHandler implements CommonHandler{
+
+	@Override
+	public boolean RedirectYn(HttpServletRequest req) {
+		return true;
+	}
+
+	@Override
+	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		String funBoardCode = req.getParameter("funBoardCode");
+		
+		FunBoardService funBoardService = FunBoardServiceImpl.getInstance();
+		
+		int resCnt = funBoardService.FunBoardDelete(funBoardCode);
+		
+		String message = "";
+		if(resCnt > 0) {
+			message = "success";
+		}else {
+			message = "fail";
+		}
+		
+		String redirectUrl = req.getContextPath() + "/funboard/list.do?message=" + message;
+		return redirectUrl;
+	}
+
+}

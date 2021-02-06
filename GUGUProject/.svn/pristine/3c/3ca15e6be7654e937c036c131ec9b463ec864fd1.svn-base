@@ -1,0 +1,10 @@
+package dao;
+
+import java.sql.SQLException;
+import java.util.List;
+import com.ibatis.sqlmap.client.SqlMapClient;
+import vo.CareerVO;
+
+public interface CareerDAO {
+	public List<CareerVO> ResumeCareerSelect(SqlMapClient smc, CareerVO cv) throws SQLException;
+}

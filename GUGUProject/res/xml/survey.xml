@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="survey">
+
+<resultMap class="SurveyVO" id="surveyMap">
+
+   <result property= "surveyCode" column="SURVEY_CODE"/>
+   <result property= "surveyTitle" column="SURVEY_TITLE"/>
+   <result property= "surveyStartdate" column="SURVEY_STARTDATE"/>
+   <result property= "surveyEnddate" column="SURVEY_ENDDATE"/>
+   <result property= "surveyIng" column="SURVEY_ING"/>
+   <result property= "surveyRegdate" column="SURVEY_REGDATE"/>
+   <result property= "surveyExplain" column="SURVEY_EXPLAIN"/>
+
+</resultMap>
+
+<resultMap class="SurveyQuestionVO" id="surveyQuestionMap">
+   <result property= "surveyCode" column="SURVEY_CODE"/>
+   <result property= "sqCode" column="SQ_CODE"/>
+   <result property= "sqTitle" column="SQ_TITLE"/>
+   <result property= "sqNo" column="SQ_NO"/>
+</resultMap>
+
+
+<resultMap class="QuestionItemVO" id="QuestionItemMap">
+   <result property= "qiNo" column="QI_NO"/>
+   <result property= "qiContent" column="QI_CONTENT"/>
+   <result property= "itemSn" column="ITEM_SN"/>
+   <result property= "sqCode" column="SQ_CODE"/>
+</resultMap>
+
+<select id="SurveyAllSelect" resultMap="surveyMap">
+   SELECT SURVEY_CODE, SURVEY_ENDDATE, SURVEY_EXPLAIN,
+         SURVEY_ING, SURVEY_REGDATE, SURVEY_STARTDATE,
+         SURVEY_TITLE
+   FROM SURVEY 
+   ORDER BY SURVEY_STARTDATE DESC
+</select>
+
+
+<select id="getSearchSurvey" resultMap="surveyMap">
+   SELECT SURVEY_CODE, SURVEY_ENDDATE, SURVEY_EXPLAIN,
+         SURVEY_ING, SURVEY_REGDATE, SURVEY_STARTDATE,
+         SURVEY_TITLE
+   FROM SURVEY 
+   where SURVEY_CODE = #surveyCode#
+</select>
+
+
+<insert id="surveyInsert" parameterClass="vo.SurveyVO">
+   INSERT INTO SURVEY( SURVEY_CODE, SURVEY_ENDDATE, SURVEY_EXPLAIN,
+         SURVEY_ING, SURVEY_REGDATE, SURVEY_STARTDATE,
+         SURVEY_TITLE )
+   VALUES( 
+      'S'||NO_S.nextval,
+      #surveyCode#, #surveyEnddate#, #surveyExplain#,
+         #surveyIng#, #surveyRegdate#, #surveyStartdate#,
+         #surveyTitle# )   
+</insert>
+
+
+<update id="updateSurvey" parameterClass="vo.SurveyVO">
+   UPDATE SURVEY SET 
+      SURVEY_CODE = #surveyCode#,     
+      SURVEY_ENDDATE = to_date(#surveyEnddate#,'YYYY-MM-DD HH24:MI:SS'),  
+      SURVEY_EXPLAIN = #surveyExplain#,  
+      SURVEY_ING = #surveyIng#,  
+      SURVEY_REGDATE = #surveyRegdate#, 
+      SURVEY_STARTDATE = to_date(#surveyStartdate#,'YYYY-MM-DD HH24:MI:SS'),
+      SURVEY_TITLE = #surveyTitle#   
+   WHERE SURVEY_CODE = #surveyCode#
+</update>
+
+<delete id="surveyDelete" parameterClass="String">
+   DELETE FROM SURVEY 
+   WHERE SURVEY_CODE = #surveyCode#
+</delete>
+
+
+<select id="getSurveyQuestionList" resultMap="surveyQuestionMap">
+   SELECT SURVEY_CODE, SQ_CODE, SQ_TITLE, SQ_NO
+   FROM SURVEY_QUESTION 
+   where SURVEY_CODE = #surveyCode#
+</select>
+
+<select id="getQuestionItemList" resultMap="QuestionItemMap">
+   SELECT QI_NO, QI_CONTENT, ITEM_SN, SQ_CODE
+   FROM QUESTION_ITEM 
+   where SQ_CODE = #sqCode#
+</select>
+
+<insert id="surveyAnswerInsert" parameterClass="vo.SurveyResultVO">
+   INSERT INTO SURVEYRESULT( SURVEYRESULT_CODE, MEMBER_ID, SURVEYRESULT_MOSTSELECT,
+   SURVEYRESULT_DATE, SQ_CODE )
+   VALUES( 
+      'SR'||NO_S.nextval,
+      #memberId#, #surveyresultMostselect#,
+      sysdate, #sqCode# )   
+</insert>
+
+</sqlMap>

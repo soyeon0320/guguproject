@@ -1,0 +1,20 @@
+package service;
+
+import java.util.List;
+import vo.FunBoardVO;
+import vo.PagingVO;
+
+public interface FunBoardService {
+	public List<FunBoardVO> FunBoardAllSelect(PagingVO pv);
+	
+	public int FunBoardAllSelectCount();
+	
+	public List<FunBoardVO> FunBoardSelect(FunBoardVO fbv);
+	
+	public int FunBoardInsert(FunBoardVO fbv);
+	
+	public int FunBoardUpdate(FunBoardVO fbv);
+	
+	public int FunBoardDelete(String funBoardCode);
+	
+}

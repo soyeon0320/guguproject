@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+   <!-- DB와 연결하는 정보를 properties파일에 설정해 놓고 이 properties파일의 내용을 읽어와 설정한다. -->
+   <properties resource="SqlMapConfig.properties" />
+
+   <!-- ibatis를 처리하기 위한 환경설정 부분 -->
+   <settings cacheModelsEnabled="true" enhancementEnabled="true"
+      lazyLoadingEnabled="true" maxRequests="32" maxSessions="10"
+      maxTransactions="5" useStatementNamespaces="true" />
+
+   <!-- vo 매핑 -->
+   <typeAlias alias="AdminVO" type="vo.AdminVO"/>
+   <typeAlias alias="CareerVO" type="vo.CareerVO"/>
+   <typeAlias alias="CommentVO" type="vo.CommentVO"/>
+   <typeAlias alias="CompanyVO" type="vo.CompanyVO"/>
+   <typeAlias alias="FunBoardVO" type="vo.FunBoardVO"/>
+   <typeAlias alias="ImgVO" type="vo.ImgVO"/>
+   <typeAlias alias="IntroductionVO" type="vo.IntroductionVO"/>
+   <typeAlias alias="JobfairVO" type="vo.JobfairVO"/>
+   <typeAlias alias="JobNewsVO" type="vo.JobNewsVO"/>
+   <typeAlias alias="MemberVO" type="vo.MemberVO"/>
+   <typeAlias alias="NotisVO" type="vo.NotisVO"/>
+   <typeAlias alias="ResumeVO" type="vo.ResumeVO"/>
+   <typeAlias alias="SuccessReviewVO" type="vo.SuccessReviewVO"/>
+   <typeAlias alias="SurveyVO" type="vo.SurveyVO"/>
+   <typeAlias alias="SurveyVO" type="vo.SurveyVO"/>
+   <typeAlias alias="SurveyVO" type="vo.SurveyVO"/>
+   <typeAlias alias="SurveyQuestionVO" type="vo.SurveyQuestionVO"/>
+   <typeAlias alias="QuestionItemVO" type="vo.QuestionItemVO"/>
+   <typeAlias alias="FaqVO" type="vo.FaqVO"/>
+   <typeAlias alias="LicenseVO" type="vo.LicenseVO"/>
+   <typeAlias alias="BoardManagerVO" type="vo.BoardManagerVO"/>
+   
+   <transactionManager type="JDBC">
+      <dataSource type="SIMPLE">
+      <!--
+         각종 설정을 직접 기술해서 처리할 수도 있다.
+         <property name="JDBC.Driver" value="oracle.jdbc.driver.OracleDriver" />
+       -->
+         <property name="JDBC.Driver" value="${driver}" />
+         <property name="JDBC.ConnectionURL" value="${url}" />
+         <property name="JDBC.Username" value="${username}" />
+         <property name="JDBC.Password" value="${password}" />
+         <property name="Pool.MaximumActiveConnections" value="5"/>
+         <property name="Pool.MaximumIdleConnections" value="5"/>
+      </dataSource>
+   </transactionManager>
+
+   <!-- xml 매핑 -->
+   <sqlMap resource="xml/funBoard.xml"/>
+   <sqlMap resource="xml/jobfair.xml"/>
+   <sqlMap resource="xml/login.xml"/>
+   <sqlMap resource="xml/findAccount.xml"/>
+   <sqlMap resource="xml/member.xml"/>
+   <sqlMap resource="xml/faq.xml"/>
+   <sqlMap resource="xml/admin.xml"/>
+   <sqlMap resource="xml/notis.xml"/>
+   <sqlMap resource="xml/resume.xml"/>
+   <sqlMap resource="xml/jobnews.xml"/>
+   <sqlMap resource="xml/successReview.xml"/>
+   <sqlMap resource="xml/introduction.xml"/>
+   <sqlMap resource="xml/company.xml"/>
+   <sqlMap resource="xml/survey.xml"/>
+   <sqlMap resource="xml/boardManager.xml"/>
+</sqlMapConfig>

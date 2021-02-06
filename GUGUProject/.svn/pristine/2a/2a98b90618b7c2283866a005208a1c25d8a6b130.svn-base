@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="apply">
+
+	<resultMap class="vo.ApplyVO" id="applyMap">
+		<result property="careerTitle"	 column="CAREERTITLE"/>
+		<result property="careerDate"    column="CAREERDATE"/>
+		<result property="careerIsAdd"	 column="CAREERISADD"/>
+		<result property="introTitle"    column="INTROTITLE"/>
+		<result property="introDate"     column="INTRODATE"/>
+		<result property="introIsAdd"    column="INTROISADD"/>
+		<result property="companyTitle"  column="COMPANYTITLE"/>
+	    <result property="companyEmail"  column="COMPANYEMAIL"/>
+	    <result property="companyIsAdd"  column="COMPANYISADD"/>
+	    <result property="memberId"      column="MEMBERID"/>
+	    <result property="careerCode"    column="CAREERCODE"/>
+	    <result property="introCode"     column="INTROCODE"/>
+	    <result property="companyCode"   column="COMPANYCODE"/>
+	 </resultMap>                                           
+	    
+	
+	<insert id="addIntro"> 
+		insert into apply(
+			CAREERTITLE,
+			CAREERDATE,
+			CAREERISADD,
+			INTROTITLE,
+			INTRODATE,
+			INTROISADD,
+			COMPANYTITLE,
+			COMPANYEMAIL,
+			COMPANYISADD,
+			MEMBERID,
+			CAREERCODE,
+			INTROCODE,
+			COMPANYCODE
+		)
+		values(
+			'',
+			sysdate,
+			'',
+			#introTitle#,
+			sysdate,
+			'',
+			'',
+			'',
+			'',
+			#memberId#,
+			'',
+			#introCode#,
+			''
+		)
+	</insert>
+	
+	<select id="getList" resultMap="applyMap">
+		SELECT *
+		FROM APPLY
+		WHERE MEMBERID = #memberId#
+	</select>
+	
+	<insert id="addCareer"> 
+		insert into apply(
+			CAREERTITLE,
+			CAREERDATE,
+			CAREERISADD,
+			INTROTITLE,
+			INTRODATE,
+			INTROISADD,
+			COMPANYTITLE,
+			COMPANYEMAIL,
+			COMPANYISADD,
+			MEMBERID,
+			CAREERCODE,
+			INTROCODE,
+			COMPANYCODE
+		)
+		values(
+			#careerTitle#,
+			sysdate,
+			'',
+			'',
+			sysdate,
+			'',
+			'',
+			'',
+			'',
+			#memberId#,
+			#careerCode#,
+			'',
+			''
+		)
+</insert>
+
+<delete id="resumeDelete">
+	DELETE FROM APPLY WHERE CAREERCODE = #code#
+</delete>
+
+<delete id="introDelete">
+	DELETE FROM APPLY WHERE INTROCODE = #code#
+</delete>
+	
+</sqlMap>

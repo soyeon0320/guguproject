@@ -1,0 +1,48 @@
+package handler.member;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import common.CommonHandler;
+import service.MemberService;
+import serviceImpl.MemberServiceImpl;
+import vo.MemberVO;
+
+public class MemberIdCheckHandler implements CommonHandler{
+
+	private static final String VIEW_PAGE = "/WEB-INF/view/member/memberCheck.jsp";
+	private MemberService memberSerivce = MemberServiceImpl.getInstance();
+
+	@Override
+	public boolean RedirectYn(HttpServletRequest req) {
+		if(req.getMethod().equals("GET")) {
+			return false;
+		}else{ 
+			return true;
+		}
+	}
+
+	@Override
+	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		
+		if(req.getMethod().equals("GET")) {
+			return VIEW_PAGE;
+		}else if(req.getMethod().equals("POST")) {
+			String memberId = req.getParameter("memberId");
+			
+			MemberVO vo = new MemberVO();
+			vo.setMemberId(memberId);
+			
+			boolean IdCheck = memberSerivce.getMember(memberId);
+			if(IdCheck == false) {
+				System.out.println("false");
+			}else if(IdCheck == true) {
+				System.out.println("true");
+			}
+			String url = req.getContextPath()+ "/member/check.do";
+			return url;
+		}
+		
+		return null;
+	}
+
+}

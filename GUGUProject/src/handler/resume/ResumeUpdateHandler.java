@@ -1,0 +1,234 @@
+package handler.resume;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import common.CommonHandler;
+import service.CareerService;
+import service.LicenseService;
+import service.MemberService;
+import service.ResumeService;
+import serviceImpl.CareerServiceImpl;
+import serviceImpl.LicenseServiceImpl;
+import serviceImpl.MemberServiceImpl;
+import serviceImpl.ResumeServiceImpl;
+import vo.CareerVO;
+import vo.LicenseVO;
+import vo.MemberVO;
+import vo.ResumeVO;
+
+/**
+ * 이력서 수정 핸들러
+ * @author ksy
+ */
+public class ResumeUpdateHandler implements CommonHandler {
+	//이동할 페이지
+	private static final String VIEW_PAGE_GO = "/WEB-INF/view/resume/resumeUpdate.jsp";
+	
+	/**
+	 * 리다이렉트 여부
+	 */
+	@Override
+	public boolean RedirectYn(HttpServletRequest req) {
+		if(req.getMethod().equals("GET")) {
+			return false;
+		}else {
+			return true;
+		}
+	}
+
+	/**
+	 * 작업을 처리할 메소드
+	 */
+	@Override
+	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		if(req.getMethod().equals("GET")) {
+			memberInfo(req, res);
+			
+			/**
+			 * 이력서 정보 가져오기
+			 */
+			String code = req.getParameter("code");
+			ResumeVO rv = new ResumeVO();
+			rv.setCode(code);
+			
+			ResumeService resumeService = ResumeServiceImpl.getInstance();
+			List<ResumeVO> resumeList = resumeService.ResumeSelect(rv);
+			
+			req.setAttribute("resumeVO", resumeList.get(0));
+			
+			/**
+			 * 자격증 정보 가져오기
+			 */
+			LicenseVO lv = new LicenseVO();
+			lv.setResumeCode(code);
+			
+			LicenseService licenseService = LicenseServiceImpl.getInstance();
+			List<LicenseVO> licenseList = licenseService.ResumeLicenseSelect(lv);
+			
+			req.setAttribute("licenseList", licenseList);
+			
+			/**
+			 * 경력 정보 가져오기
+			 */
+			CareerVO cv = new CareerVO();
+			cv.setResumeCode(code);
+			
+			CareerService careerService = CareerServiceImpl.getInstance();
+			List<CareerVO> careerList = careerService.ResumeCareerSelect(cv);
+			
+			req.setAttribute("careerList", careerList);
+			
+			/**
+			 * jsp 페이지로 이동
+			 */
+			return VIEW_PAGE_GO;
+		}else if(req.getMethod().equals("POST")) {
+			memberInfo(req, res);
+			
+			/**
+			 * 이력서 수정하기
+			 */
+			String code = req.getParameter("code");
+			String schoolSection = req.getParameter("schoolSection");
+			String schoolName = req.getParameter("schoolName");
+			String schoolMajor = req.getParameter("schoolMajor");
+			if(schoolMajor=="" || schoolMajor.trim().equals("")) {
+				schoolMajor = " ";
+			}
+			double schoolScore = 0;
+			try {
+				schoolScore = Double.parseDouble(req.getParameter("schoolScore"));
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			String schoolStartDate = req.getParameter("schoolStartDate");
+			String schoolEndDate = req.getParameter("schoolEndDate");
+			String schoolEndYn = req.getParameter("schoolEndYn");
+			String title = req.getParameter("title");
+			
+			ResumeVO rv = new ResumeVO();
+			
+			rv.setCode(code);
+			rv.setSchoolSection(schoolSection);
+			rv.setSchoolName(schoolName);
+			rv.setSchoolMajor(schoolMajor);
+			rv.setSchoolScore(schoolScore);
+			rv.setSchoolStartDate(schoolStartDate);
+			rv.setSchoolEndDate(schoolEndDate);
+			rv.setSchoolEndYn(schoolEndYn);
+			rv.setTitle(title);
+			
+			ResumeService resumeService = ResumeServiceImpl.getInstance();
+			
+			int resCnt = resumeService.ResumeUpdate(rv);
+			
+			String message = "";
+			if(resCnt > 0) {
+				message = "success";
+			}else {
+				message = "fail";
+			}
+			
+			/**
+			 * 자격증 수정하기
+			 */
+			LicenseService licenseService = LicenseServiceImpl.getInstance();
+			
+			LicenseVO lv = new LicenseVO();
+			lv.setResumeCode(rv.getCode());
+			
+			//input 태그에서 같은 name의 이름을 가진 데이터를 배열로 반환
+			String[] licenCodeArr = req.getParameterValues("licenseCode");
+			String[] licenNmArr = req.getParameterValues("licenseName");
+			String[] licenDtArr = req.getParameterValues("licenseGetDate");
+			
+			for(int idx=0; idx<licenNmArr.length; idx++) {
+				if(licenCodeArr[idx] != null || !licenCodeArr[idx].equals("")) {
+					lv.setLicenseCode(licenCodeArr[idx]);
+					lv.setName(licenNmArr[idx]);
+					lv.setGetDate(licenDtArr[idx]);
+					
+					licenseService.ResumeLicenseUpdate(lv);
+				}
+				if(licenCodeArr[idx] == null || licenCodeArr[idx].equals("")) {
+					lv.setName(licenNmArr[idx]);
+					lv.setGetDate(licenDtArr[idx]);
+					
+					licenseService.ResumeLicenseInsert(lv);
+				}
+			}
+			
+			/**
+			 * 경력 수정하기
+			 */
+			CareerService careerService = CareerServiceImpl.getInstance();
+			
+			CareerVO cv = new CareerVO();
+			cv.setResumeCode(rv.getCode());
+			
+			String[] careerCodeArr = req.getParameterValues("careerCode");
+			String[] comNmArr = req.getParameterValues("companyName");
+			String[] depNmArr = req.getParameterValues("departName");
+			String[] stDtArr = req.getParameterValues("startDate");
+			String[] endDtArr = req.getParameterValues("endDate");
+			String[] jobNmArr = req.getParameterValues("jobName");
+			String[] posNmArr = req.getParameterValues("positionName");
+			
+			for(int idx=0; idx<comNmArr.length; idx++) {
+				if(careerCodeArr[idx] != null || !careerCodeArr[idx].equals("")) {
+					cv.setCareerCode(careerCodeArr[idx]);
+					cv.setCompanyName(comNmArr[idx]);
+					cv.setDepartName(depNmArr[idx]);
+					cv.setStartDate(stDtArr[idx]);
+					cv.setEndDate(endDtArr[idx]);
+					if(jobNmArr[idx] != null || !jobNmArr[idx].equals("")) {
+						cv.setJobName(jobNmArr[idx]);
+					}
+					if(posNmArr[idx] == null || posNmArr[idx].equals("")) {
+						cv.setPositionName(" ");
+					}
+					
+					careerService.ResumeCareerUpdate(cv);
+				}
+				if(careerCodeArr[idx] == null || careerCodeArr[idx].equals("")) {
+					cv.setCompanyName(comNmArr[idx]);
+					cv.setDepartName(depNmArr[idx]);
+					cv.setStartDate(stDtArr[idx]);
+					cv.setEndDate(endDtArr[idx]);
+					if(jobNmArr[idx] != null || !jobNmArr[idx].equals("")) {
+						cv.setJobName(jobNmArr[idx]);
+					}
+					if(posNmArr[idx] == null || posNmArr[idx].equals("")) {
+						cv.setPositionName(" ");
+					}
+					
+					careerService.ResumeCareerInsert(cv);
+				}
+			}
+			
+			/**
+			 * jsp 페이지로 이동
+			 */
+			return req.getContextPath() + "/resume/select.do?code="+ code + "&message=" + message;
+		}
+		return null;
+	}
+	
+	/**
+	 * 현재 접속중인 회원 정보 가져오기
+	 */
+	public void memberInfo(HttpServletRequest req, HttpServletResponse res) {
+		HttpSession session = req.getSession(false);
+		MemberVO mv = new MemberVO();
+		mv.setMemberId((String)session.getAttribute("memberId"));
+		
+		MemberService memberService = MemberServiceImpl.getInstance();
+		List<MemberVO> memberInfo = memberService.memberSelect(mv);
+		req.setAttribute("memberInfo", memberInfo.get(0));
+	}
+
+}

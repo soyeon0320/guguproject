@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="company">
+	
+	<resultMap class="CompanyVO" id="companyMap">
+		<result property="code" column="COMPANY_CODE"/>
+		<result property="name" column="COMPANY_NAME"/>
+		<result property="title" column="COMPANY_TITLE"/>
+		<result property="career" column="COMPANY_CAREER"/>
+		<result property="educstion" column="COMPANY_EDUCSTION"/>
+		<result property="employment" column="COMPANY_EMPLOYMENT"/>
+		<result property="salary" column="COMPANY_SALARY"/>
+		<result property="area" column="COMPANY_AREA"/>
+		<result property="business" column="COMPANY_BUSINESS"/>
+		<result property="employees" column="COMPANY_EMPLOYEES"/>
+		<result property="estab" column="COMPANY_ESTAB"/>
+		<result property="homepage" column="COMPANY_HOMEPAGE"/>
+		<result property="regdate" column="COMPANY_REGDATE"/>
+		<result property="lastdate" column="COMPANY_LASTDATE"/>
+	</resultMap>
+
+<insert id="insert" parameterClass="CompanyVO">
+		insert into company (
+		    COMPANY_CODE,
+		    COMPANY_NAME,
+		    COMPANY_TITLE,
+		    COMPANY_CAREER,
+		    COMPANY_EDUCSTION,
+		    COMPANY_EMPLOYMENT,
+		    COMPANY_SALARY,
+		    COMPANY_AREA,
+		    COMPANY_BUSINESS,
+		    COMPANY_EMPLOYEES,
+		    COMPANY_ESTAB,
+		    COMPANY_HOMEPAGE,
+		    COMPANY_REGDATE,
+		    COMPANY_LASTDATE
+		) values (
+		    'C'||no_c.nextval,
+		    #name#,
+		    #title#,
+		    #career#,
+		    #educstion#,
+		    #employment#,
+		    #salary#,
+		    #area#,
+		    #business#,
+		    #employees#,
+		    #estab#,
+		    #homepage#,
+		    #regdate#,
+		    #lastdate#
+		)
+	</insert>
+
+	<select id="companyList" resultMap="companyMap">
+		select 
+			COMPANY_CODE,
+			COMPANY_NAME,
+			COMPANY_TITLE,
+			COMPANY_CAREER,
+			COMPANY_EDUCSTION,
+			COMPANY_EMPLOYMENT,
+			COMPANY_SALARY,
+			COMPANY_AREA,
+			COMPANY_BUSINESS,
+			COMPANY_EMPLOYEES,
+			COMPANY_ESTAB,
+			COMPANY_HOMEPAGE,
+			COMPANY_REGDATE,
+		    COMPANY_LASTDATE
+		 from company
+	</select>
+	
+	<select id="select" resultMap="companyMap">
+		select 
+			COMPANY_CODE,
+			COMPANY_NAME,
+			COMPANY_TITLE,
+			COMPANY_CAREER,
+			COMPANY_EDUCSTION,
+			COMPANY_EMPLOYMENT,
+			COMPANY_SALARY,
+			COMPANY_AREA,
+			COMPANY_BUSINESS,
+			COMPANY_EMPLOYEES,
+			COMPANY_ESTAB,
+			COMPANY_HOMEPAGE,
+			COMPANY_REGDATE,
+		    COMPANY_LASTDATE
+		 from company
+		 where COMPANY_CODE=#code#
+	</select>
+
+	<update id="modify" parameterClass="CompanyVO">
+		update company set
+			COMPANY_NAME=#name#,
+			COMPANY_TITLE=#title#,
+			COMPANY_CAREER=#career#,
+			COMPANY_EDUCSTION=#educstion#,
+			COMPANY_EMPLOYMENT=#employment#,
+			COMPANY_SALARY=#salary#,
+			COMPANY_AREA=#area#,
+			COMPANY_BUSINESS=#business#,
+			COMPANY_EMPLOYEES=#employees#,
+			COMPANY_ESTAB=#estab#,
+			COMPANY_HOMEPAGE=#homepage#,
+			COMPANY_REGDATE=#regdate#,
+		    COMPANY_LASTDATE=#lastdate#
+		where COMPANY_CODE=#code#
+	</update>
+</sqlMap>

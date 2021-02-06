@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="resume">
+
+<resultMap class="ResumeVO" id="resumeMap">
+	<result property="code" column="RESUME_CODE"/>
+	<result property="title" column="RESUME_TITLE"/>
+	<result property="schoolSection" column="RESUME_SCHOOL_SECTION"/>
+	<result property="schoolName" column="RESUME_SCHOOL_NAME"/>
+	<result property="schoolMajor" column="RESUME_SCHOOL_MAJOR"/>
+	<result property="schoolScore" column="RESUME_SCHOOL_SCORE"/>
+	<result property="schoolStartDate" column="RESUME_SCHOOL_STARTDATE"/>
+	<result property="schoolEndDate" column="RESUME_SCHOOL_ENDDATE"/>
+	<result property="schoolEndYn" column="RESUME_SCHOOL_YN"/>
+	<result property="imgSrc" column="RESUME_IMGSRC"/>
+	<result property="imgName" column="RESUME_IMGNAME"/>
+	<result property="regDate" column="RESUME_REGDATE"/>
+	<result property="memberId" column="MEMBER_ID"/>
+</resultMap>
+
+<select id="ResumeAllSelect" resultMap="resumeMap">
+	SELECT * FROM RESUME
+</select>
+
+<select id="ResumeSelect" resultMap="resumeMap">
+	SELECT * FROM RESUME WHERE RESUME_CODE = #code#
+</select>
+
+<resultMap class="LicenseVO" id="licenseMap">
+	<result property="licenseCode" column="LICENSE_CODE"/>
+	<result property="name" column="LICENSE_NAME"/>
+	<result property="getDate" column="LICENSE_GETDATE"/>
+	<result property="resumeCode" column="RESUME_CODE"/>
+</resultMap>
+
+<select id="ResumeLicenseSelect" resultMap="licenseMap">
+	SELECT * FROM LICENSE WHERE RESUME_CODE = #resumeCode#
+</select>
+
+<resultMap class="CareerVO" id="careerMap">
+	<result property="careerCode" column="CAREER_CODE"/>
+	<result property="companyName" column="CAREER_COMPANYNAME"/>
+	<result property="departName" column="CAREER_DEPARTNAME"/>
+	<result property="positionName" column="CAREER_POSITIONNAME"/>
+	<result property="startDate" column="CAREER_STARTDATE"/>
+	<result property="endDate" column="CAREER_ENDDATE"/>
+	<result property="jobName" column="CAREER_JOBNAME"/>
+	<result property="resumeCode" column="RESUME_CODE"/>
+</resultMap>
+
+<select id="ResumeCareerSelect" resultMap="careerMap">
+	SELECT * FROM CAREER WHERE RESUME_CODE = #resumeCode#
+</select>
+
+<insert id="ResumeInsert" parameterClass="ResumeVO">
+	<selectKey keyProperty="code" resultClass="String">
+		SELECT RESUME_CODE_SEQ.NEXTVAL FROM DUAL
+	</selectKey>
+	INSERT INTO RESUME 
+	(
+	    RESUME_CODE,
+	    RESUME_TITLE,
+	    RESUME_SCHOOL_SECTION,
+	    RESUME_SCHOOL_NAME,
+	    RESUME_SCHOOL_MAJOR,
+	    RESUME_SCHOOL_SCORE,
+	    RESUME_SCHOOL_STARTDATE,
+	    RESUME_SCHOOL_ENDDATE,
+	    RESUME_SCHOOL_YN,
+	    RESUME_IMGSRC,
+	    RESUME_IMGNAME,
+	    RESUME_REGDATE,
+	    MEMBER_ID
+    )
+	VALUES
+	(
+		#code#,
+		#title#,
+		#schoolSection#,
+		#schoolName#,
+		#schoolMajor#,
+		#schoolScore#,
+		#schoolStartDate#,
+		#schoolEndDate#,
+		#schoolEndYn#,
+		#imgSrc#,
+		#imgName#,
+		SYSDATE,
+		#memberId#
+	)
+</insert>
+
+<insert id="ResumeLicenseInsert" parameterClass="LicenseVO">
+	INSERT INTO LICENSE
+	(
+	    LICENSE_CODE,
+	    LICENSE_NAME,
+	    LICENSE_GETDATE,
+	    RESUME_CODE
+	)
+	VALUES
+	(
+	    LICENSE_CODE_SEQ.NEXTVAL,
+	    #name#,
+	    #getDate#,
+	    (
+	    	SELECT RESUME_CODE
+		      FROM RESUME
+			 WHERE RESUME_CODE = #resumeCode#
+	    )
+	)
+</insert>
+
+</sqlMap>

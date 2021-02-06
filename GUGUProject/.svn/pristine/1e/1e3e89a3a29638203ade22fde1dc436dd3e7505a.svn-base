@@ -1,0 +1,30 @@
+package service;
+
+import java.util.List;
+import vo.MemberVO;
+import vo.PagingVO;
+
+public interface MemberService {
+	
+	// 회원가입
+	public int insertMember(MemberVO vo); 
+	
+	//회원 목록
+	public List<MemberVO> memberAllSelect(PagingVO pv);
+	
+	//회원 전체 조회
+	public int memberAllSelectCount();
+	
+	//회원 상세 조회
+	public List<MemberVO> memberSelect(MemberVO mv);
+	
+	// 회원 아이디 중복 체크
+	public boolean getMember(String memberId);
+	
+	//회원 수정
+	public int memberUpdate(MemberVO mv);
+	
+	//회원 삭제
+	public int memberDelete(String memberId);
+	
+}

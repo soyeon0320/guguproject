@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="funBoard">
+
+<resultMap class="FunBoardVO" id="funBoardMap">
+	<result property="code" column="FUNBOARD_CODE"/>
+	<result property="title" column="FUNBOARD_TITLE"/>
+	<result property="content" column="FUNBOARD_CONTENT"/>
+	<result property="regDate" column="FUNBOARD_REGDATE"/>
+	<result property="memId" column="FUNBOARD_MEMID"/>
+	<result property="manager" column="FUNBOARD_MANAGER"/>
+</resultMap>
+
+<select id="FunBoardAllSelect" resultMap="funBoardMap">
+	SELECT AA.*
+	    FROM (SELECT B.*, 
+	                 ROWNUM AS rnum              
+	          FROM (SELECT *
+	                FROM FUNBOARD
+	                ORDER BY TO_NUMBER(SUBSTR(FUNBOARD_CODE,2)) DESC) B) AA
+	    WHERE AA.rnum BETWEEN #firstRectNo# and #lastRectNo#
+</select>
+
+<select id="FunBoardAllSelectCount" resultClass="int">
+	SELECT COUNT(*) FROM FUNBOARD
+</select>
+
+<select id="FunBoardSelect" resultMap="funBoardMap">
+	 SELECT FUNBOARD_CODE,
+			FUNBOARD_TITLE,
+			FUNBOARD_CONTENT,
+			FUNBOARD_REGDATE,
+			FUNBOARD_MEMID,
+			FUNBOARD_MANAGER
+	  FROM FUNBOARD
+	  WHERE FUNBOARD_CODE = #code#
+</select>
+
+<insert id="FunBoardInsert" parameterClass="FunBoardVO">
+	INSERT INTO FUNBOARD
+	(
+	    FUNBOARD_CODE,
+	    FUNBOARD_TITLE,
+	    FUNBOARD_CONTENT,
+	    FUNBOARD_REGDATE,
+	    FUNBOARD_MEMID,
+	    FUNBOARD_MANAGER
+	)
+	VALUES
+	(
+	     'B' || FUNBOARD_CODE_SEQ.NEXTVAL,
+	     #title#,
+	     #content#,
+	     SYSDATE,
+	     #memId#,
+	     'B'
+	)
+</insert>
+
+<update id="FunBoardUpdate" parameterClass="FunBoardVO">
+	UPDATE FUNBOARD
+	   SET FUNBOARD_TITLE = #title#,
+	   	   FUNBOARD_CONTENT = #content#
+	 WHERE FUNBOARD_CODE = #code#
+</update>
+
+<delete id="FunBoardDelete" parameterClass="String">
+	DELETE FROM FUNBOARD WHERE FUNBOARD_CODE = #funBoardCode#
+</delete>
+
+<resultMap class="CommentVO" id="commentMap">
+	<result property="code" column="CMNT_CODE"/>
+	<result property="funBoardCode" column="FUNBOARD_CODE"/>
+	<result property="regName" column="CMNT_REGNAME"/>
+	<result property="content" column="CMNT_CONTENT"/>
+	<result property="regDate" column="CMNT_REGDATE"/>
+	<result property="parentLevel" column="CMNT_PARENTLEVEL"/>
+	<result property="childLevel" column="CMNT_CHILDLEVEL"/>
+</resultMap>
+
+<select id="CommentAllSelect" resultMap="commentMap">
+	SELECT * FROM CMNT WHERE FUNBOARD_CODE = #funBoardCode#
+</select>
+
+<select id="CommentAllSelectCount" parameterClass="int">
+	SELECT COUNT(*) FROM CMNT
+</select>
+
+<insert id="CommentInsert" parameterClass="CommentVO">
+	INSERT INTO CMNT
+	(
+		FUNBOARD_CODE,
+		CMNT_CODE,
+		CMNT_REGNAME,
+		CMNT_CONTENT,
+		CMNT_REGDATE,
+		CMNT_PARENTLEVEL,
+		CMNT_CHILDLEVEL
+	)
+	VALUES
+	(
+		(SELECT FUNBOARD_CODE 
+		   FROM FUNBOARD 
+		  WHERE FUNBOARD_CODE = #funBoardCode#
+		  ),
+		CMNT_CODE_SEQ.NEXTVAL,
+		#regName#,
+		#content#,
+		SYSDATE,
+		#parentLevel#,
+		#childLevel#
+	)
+</insert>
+
+<delete id="CommentDelete" parameterClass="String">
+	DELETE FROM CMNT WHERE CMNT_CODE = #code#
+</delete>
+
+<update id="CommentUpdate" parameterClass="CommentVO">
+	UPDATE CMNT 
+	   SET CMNT_REGDATE = SYSDATE,
+		   CMNT_CONTENT = #content#
+	 WHERE CMNT_CODE = #code#
+</update>
+
+</sqlMap>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="successReview">
+
+<resultMap class="successReviewVO" id="successReviewMap">
+	<result property="code"		  column="SR_CODE"/>
+	<result property="title"	  column="SR_TITLE"/>
+	<result property="content"    column="SR_CONTENT"/>
+	<result property="regName"	  column="SR_REGNAME"/>
+	<result property="regDate"    column="SR_REGDATE"/>
+	<result property="imgSrc"	  column="SR_IMGSRC"/>
+    <result property="memberId"   column="MEMBER_ID"/>
+</resultMap>
+
+
+<select id="successReviewAllSelect" resultMap="successReviewMap">
+	SELECT AA.*
+	  FROM (SELECT A.*, rownum AS rnum FROM SUCCESSREVIEW A) AA
+	 WHERE AA.rnum BETWEEN #firstRectNo# and #lastRectNo#
+</select>
+
+<select id="successReviewAllSelectCount" resultClass="int">
+	SELECT COUNT(*) FROM SUCCESSREVIEW
+</select>
+
+<select id="getSuccessReview" resultMap="successReviewMap">
+	 SELECT SR_CODE ,
+			SR_TITLE ,
+			SR_CONTENT ,
+			SR_REGNAME ,
+			SR_REGDATE ,
+			SR_IMGSRC ,
+			MEMBER_ID
+			
+	  FROM SUCCESSREVIEW
+	  WHERE SR_CODE = #code#
+</select>
+
+<insert id="insert" parameterClass="SuccessReviewVO">
+	INSERT INTO SUCCESSREVIEW
+	(
+	   SR_CODE ,    
+	   SR_TITLE ,   
+	   SR_CONTENT , 
+	   SR_REGNAME , 
+	   SR_REGDATE , 
+	   SR_IMGSRC ,  
+	   MEMBER_ID    
+	)
+	VALUES
+	(
+	     'W' || SUCCESSREVIEW_SEQ.NEXTVAL,
+	     #title#,	
+	     #content#,  
+	     #regName#,	
+	     sysdate,
+	     #imgSrc#,	
+	     #memberId# 
+	)	 
+</insert>
+
+<update id="update" parameterClass="SuccessReviewVO">
+	UPDATE SUCCESSREVIEW
+	   SET SR_TITLE   = #title#,	 
+	   	   SR_CONTENT = #content#,  
+	   	   SR_REGNAME = #regName#,	 
+	   	   SR_REGDATE = sysdate,    
+	   	   SR_IMGSRC  = #imgSrc#,	 
+	   	   MEMBER_ID  = #memberId#  
+	 WHERE SR_CODE = #code#
+</update>
+
+<delete id="delete" parameterClass="String">
+	DELETE FROM SUCCESSREVIEW WHERE SR_CODE = #code#
+</delete>
+
+
+</sqlMap>

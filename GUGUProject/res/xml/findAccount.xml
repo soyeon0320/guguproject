@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="findAccount">
+
+<resultMap class="vo.MemberVO" id="memberLoginResultMap">
+	<result property="memberId"		column="MEMBER_ID"/>
+	<result property="memberName"	column="MEMBER_NAME"/>
+	<result property="memberBirth"	column="MEMBER_BIRTH"/>
+	<result property="memberPw"		column="MEMBER_PW"/>
+	<result property="memberGender" column="MEMBER_GENDER"/>
+	<result property="memberPhone"	column="MEMBER_PHONE"/>
+	<result property="memberEmail"	column="MEMBER_EMAIL"/>
+	<result property="memberAddr1"	column="MEMBER_ADDR1"/>
+	<result property="memberAddr2"	column="MEMBER_ADDR2"/>
+</resultMap>
+
+<select id="findPwInputId" resultMap="memberLoginResultMap">
+	SELECT * FROM MEMBER
+	WHERE MEMBER_ID = #memberId#
+</select>
+
+<select id="findPwInputEmail" resultMap="memberLoginResultMap">
+	SELECT * FROM MEMBER
+	WHERE MEMBER_EMAIL = #memberEmail#
+</select>
+
+<select id="findId" resultMap="memberLoginResultMap">
+	SELECT * FROM MEMBER
+	WHERE MEMBER_PHONE = #memberPhone#
+	AND MEMBER_NAME = #memberName#
+</select>
+
+</sqlMap>

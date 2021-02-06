@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="boardManager">
+
+	<resultMap class="BoardManagerVO" id="BoardManagerMap">
+		
+		<result property="searchName" column="SEARCHNAME"/>
+		
+		<result property="c" column="GORY_C"/>
+		<result property="f" column="GORY_F"/>
+		<result property="b" column="GORY_B"/>
+		<result property="r" column="GORY_R"/>
+		<result property="e" column="GORY_E"/>
+		<result property="n" column="GORY_N"/>
+		
+		<result property="code" column="COMPANY_CODE"/>
+		<result property="name" column="COMPANY_NAME"/>
+		<result property="title" column="COMPANY_TITLE"/>
+		<result property="career" column="COMPANY_CAREER"/>
+		<result property="educstion" column="COMPANY_EDUCSTION"/>
+		<result property="employment" column="COMPANY_EMPLOYMENT"/>
+		<result property="salary" column="COMPANY_SALARY"/>
+		<result property="area" column="COMPANY_AREA"/>
+		<result property="business" column="COMPANY_BUSINESS"/>
+		<result property="employees" column="COMPANY_EMPLOYEES"/>
+		<result property="estab" column="COMPANY_ESTAB"/>
+		<result property="homepage" column="COMPANY_HOMEPAGE"/>
+		<result property="regdate" column="COMPANY_REGDATE"/>
+		<result property="lastdate" column="COMPANY_LASTDATE"/>
+		
+	</resultMap>
+	
+	<resultMap class="CompanyVO" id="BoardManagerVO" extends="BoardManagerMap">
+		<result property="code" column="COMPANY_CODE"/>
+		<result property="name" column="COMPANY_NAME"/>
+		<result property="title" column="COMPANY_TITLE"/>
+		<result property="career" column="COMPANY_CAREER"/>
+		<result property="educstion" column="COMPANY_EDUCSTION"/>
+		<result property="employment" column="COMPANY_EMPLOYMENT"/>
+		<result property="salary" column="COMPANY_SALARY"/>
+		<result property="area" column="COMPANY_AREA"/>
+		<result property="business" column="COMPANY_BUSINESS"/>
+		<result property="employees" column="COMPANY_EMPLOYEES"/>
+		<result property="estab" column="COMPANY_ESTAB"/>
+		<result property="homepage" column="COMPANY_HOMEPAGE"/>
+		<result property="regdate" column="COMPANY_REGDATE"/>
+		<result property="lastdate" column="COMPANY_LASTDATE"/>
+		<result property="manager" column="MANAGER"/>
+	</resultMap>
+	
+	<select id="list" resultMap="BoardManagerMap">
+			SELECT 
+				C.COMPANY_NAME,
+				C.COMPANY_TITLE,
+				C.COMPANY_EMPLOYMENT,
+				C.COMPANY_SALARY,
+				C.COMPANY_CAREER,
+				C.COMPANY_EDUCSTION,
+				C.COMPANY_AREA
+			FROM BOARD_MANAGEMENT A, COMPANY C
+			WHERE  A.GORY_C = C.MANAGER
+			OR C.COMPANY_TITLE LIKE '%'||#searchName#||'%'
+	</select>
+	
+</sqlMap>
+
+
+
+
+
+
+
+

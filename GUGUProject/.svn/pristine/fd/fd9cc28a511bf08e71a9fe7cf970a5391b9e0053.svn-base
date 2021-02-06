@@ -1,0 +1,63 @@
+package daoImpl;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import com.ibatis.sqlmap.client.SqlMapClient;
+import dao.CompanyDAO;
+import vo.CompanyVO;
+
+public class CompanyDAOImpl implements CompanyDAO{
+
+	private static CompanyDAO dao;
+	public CompanyDAOImpl() {}
+	
+	public static CompanyDAO getInstance() {
+		if(dao == null) {
+			dao = new CompanyDAOImpl();
+		}
+		return dao;
+	}
+	
+	@Override
+	public List<CompanyVO> companyList(SqlMapClient smc) throws SQLException{
+		List<CompanyVO> list = new ArrayList<CompanyVO>();
+		list = smc.queryForList("company.companyList");
+		return list;
+	}
+
+	@Override
+	public List<CompanyVO> select(SqlMapClient smc, CompanyVO vo) throws SQLException {
+		List<CompanyVO> list = new ArrayList<CompanyVO>();
+		list = smc.queryForList("company.select",vo);
+		return list;
+	}
+
+	@Override
+	public int insert(SqlMapClient smc, CompanyVO vo) throws SQLException {
+		int cnt = 0;
+		Object obj = smc.insert("company.insert",vo);
+		if(obj==null) {
+			cnt = 1;
+		}
+		return cnt;
+	}
+
+	@Override
+	public int modify(SqlMapClient smc, CompanyVO vo) throws SQLException {
+		int cnt = 0;
+		cnt = smc.update("company.modify",vo);
+		return cnt;
+	}
+
+}
+
+
+
+
+
+
+
+
+
+

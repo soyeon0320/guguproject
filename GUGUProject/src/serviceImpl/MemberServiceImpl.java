@@ -1,0 +1,135 @@
+package serviceImpl;
+
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
+import com.ibatis.sqlmap.client.SqlMapClient;
+import dao.MemberDAO;
+import daoImpl.MemberDAOImpl;
+import service.MemberService;
+import util.SqlMapClientFactory;
+import vo.MemberVO;
+import vo.PagingVO;
+
+public class MemberServiceImpl implements MemberService{
+
+	private static MemberService memberService;
+	private MemberDAO memberDAO;
+	private SqlMapClient smc;
+	
+	public MemberServiceImpl() {
+		memberDAO = MemberDAOImpl.getInstance();
+		smc = SqlMapClientFactory.getInstance();
+	}
+	
+	public static MemberService getInstance() {
+		if(memberService == null) {
+			memberService = new MemberServiceImpl();
+		}
+		return memberService;
+	}
+	@Override
+	public int insertMember(MemberVO vo) {
+		int cnt = 0;
+		try {
+			smc.startTransaction();
+			cnt = memberDAO.insertMember(smc, vo);
+			smc.commitTransaction();
+		}catch (Exception e) {
+			   try {
+		            //작업이 완료되지 않으면 롤백
+		            smc.endTransaction();
+		         } catch (SQLException e1) {
+		            e1.printStackTrace();
+		            throw new RuntimeException("회원 등록중 에러 발생",e1);
+		         }finally {
+		 			try {
+						smc.endTransaction();
+					} catch (SQLException e1) {
+						e.printStackTrace();
+					}
+				}
+		}
+		return cnt;
+	}
+
+	@Override
+	public List<MemberVO> memberAllSelect(PagingVO pv) {
+		List<MemberVO> memberList = Collections.EMPTY_LIST;
+		try {
+			memberList = memberDAO.memberAllSelect(smc, pv);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return memberList;
+	}
+
+	@Override
+	public int memberAllSelectCount() {
+		int resCnt = 0;
+		try {
+			resCnt = memberDAO.memberAllSelectCount(smc);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return resCnt;
+	}
+
+	@Override
+	public List<MemberVO> memberSelect(MemberVO mv) {
+		List<MemberVO> memberList = Collections.EMPTY_LIST;
+		try {
+			memberList = memberDAO.memberSelect(smc, mv);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return memberList;
+	}
+
+	@Override
+	public List<MemberVO> getMember() {
+		List<MemberVO> list = Collections.EMPTY_LIST;
+		try { 
+			list=memberDAO.getMember(smc);
+		}catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException("id체크 오류",e);
+		}
+		
+		return list;
+	}
+
+	@Override
+	public int memberUpdate(MemberVO mv) {
+		int resCnt = 0;
+		try {
+			resCnt = memberDAO.memberUpdate(smc, mv);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return resCnt;
+	}
+
+	@Override
+	public int memberDelete(String memberId) {
+		int resCnt = 0;
+		try {
+			resCnt = memberDAO.memberDelete(smc, memberId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return resCnt;
+	}
+
+	@Override
+	public int memberForgive(String memberId) {
+		int resCnt = 0;
+		try {
+			resCnt = memberDAO.memberForgive(smc, memberId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return resCnt;
+	}
+
+}

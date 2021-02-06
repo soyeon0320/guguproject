@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="introduction">
+
+<resultMap class="IntroductionVO" id="introductionMap">
+	<result property="code"		column="INTRODUCTION_CODE"/>
+	<result property="title" 	column="INTRODUCTION_TITLE"/>
+	<result property="writer"   column="INTRODUCTION_WRITER"/>
+	<result property="regDate"  column="INTRODUCTION_REGDATE"/>
+	<result property="reason"   column="INTRODUCTION_REASON"/>
+	<result property="growth"   column="INTRODUCTION_GROWTH"/>
+	<result property="career"   column="INTRODUCTION_CAREER"/>
+	<result property="memberId"	column="MEMBER_ID"/>
+</resultMap>
+
+
+<select id="introductionAllSelect" resultMap="introductionMap">
+     SELECT AA.*
+       FROM (SELECT A.*, rownum AS rnum FROM INTRODUCTION A) AA
+	  WHERE AA.rnum BETWEEN #firstRectNo# and #lastRectNo#
+</select>
+
+<select id="introductionAllSelectCount" resultClass="int">
+	SELECT COUNT(*) FROM INTRODUCTION
+</select>
+
+<select id="memberIntroductionAllSelect" resultMap="introductionMap" >
+	SELECT AA.*
+       FROM (SELECT B.*,  						<!-- SELECT B.* : INTRODUCTION 테이블에서 memberId에 해당하는 데이터 추출 후  INTRODUCTION_CODE 역순으로 정렬 한(가장 최근에 작성한게 가장 먼저 오도록) 데이터  -->
+                    ROWNUM AS rnum              <!-- 위 데이터에 ROWNUM 부여 --> 
+               FROM (SELECT A.*
+                       FROM INTRODUCTION A 
+                      WHERE MEMBER_ID = #memberId# 
+                      ORDER BY TO_NUMBER(SUBSTR(A.INTRODUCTION_CODE,2)) DESC) B) AA
+      WHERE AA.rnum BETWEEN #firstRectNo# and #lastRectNo#     <!-- 생성된 ROWNUM을 토대로 페이징 처리 --> 
+</select>
+
+<select id="memberIntroductionAllSelectCount" resultClass="int">
+	SELECT COUNT(*) FROM INTRODUCTION
+	WHERE MEMBER_ID = #memberId#
+</select>
+
+<select id="getInroduction" resultMap="introductionMap">
+	 SELECT INTRODUCTION_CODE ,
+			INTRODUCTION_TITLE ,
+			INTRODUCTION_WRITER ,
+			INTRODUCTION_REGDATE ,
+			INTRODUCTION_REASON ,
+			INTRODUCTION_GROWTH ,
+			INTRODUCTION_CAREER ,
+			MEMBER_ID
+			 
+	  FROM INTRODUCTION
+	  WHERE INTRODUCTION_CODE = #code#
+</select>
+
+<insert id="insert" parameterClass="IntroductionVO">
+	INSERT INTO INTRODUCTION
+	(
+	    INTRODUCTION_CODE ,   
+	    INTRODUCTION_TITLE ,  
+	    INTRODUCTION_WRITER , 
+	    INTRODUCTION_REGDATE ,
+	    INTRODUCTION_REASON , 
+	    INTRODUCTION_GROWTH , 
+	    INTRODUCTION_CAREER , 
+	    MEMBER_ID             
+	)
+	VALUES
+	(
+	     'L' || INTRODUCTION_SEQ.NEXTVAL,
+	     #title#, 	
+	     #writer#,   
+	     SYSDATE,  
+	     #reason#,   
+	     #growth#,  
+	     #career#,   
+	     #memberId#	
+	)	 
+</insert>
+
+<update id="update" parameterClass="introductionVO">
+	UPDATE INTRODUCTION
+	   SET INTRODUCTION_TITLE  = #title#, 	
+	   	   INTRODUCTION_WRITER = #writer#,  
+	   	   INTRODUCTION_REGDATE= SYSDATE,   
+	   	   INTRODUCTION_REASON = #reason#,  
+	   	   INTRODUCTION_GROWTH = #growth#,  
+	   	   INTRODUCTION_CAREER = #career#,  
+	   	   MEMBER_ID           = #memberId#	 
+	 WHERE INTRODUCTION_CODE   = #code#
+</update>
+
+<delete id="delete" parameterClass="String">
+	DELETE FROM INTRODUCTION WHERE INTRODUCTION_CODE = #introductionCode#
+</delete>
+
+
+</sqlMap>

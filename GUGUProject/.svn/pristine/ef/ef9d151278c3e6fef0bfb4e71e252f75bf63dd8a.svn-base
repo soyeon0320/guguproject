@@ -1,0 +1,51 @@
+package serviceImpl;
+
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+import dao.CommentDAO;
+import daoImpl.CommentDAOImpl;
+import service.CommentService;
+import vo.CommentVO;
+import vo.FunBoardVO;
+
+public class CommentServiceImpl implements CommentService{
+	private static CommentService commentService;
+	private CommentDAO commentDao;
+	private SqlMapClient smc;
+	
+	public static CommentService getInstance() {
+		if(commentService==null) {
+			commentService = new CommentServiceImpl();
+		}
+		return commentService;
+	}
+	
+	public CommentServiceImpl() {
+		commentDao = CommentDAOImpl.getInstance();
+	}
+
+	@Override
+	public List<CommentVO> CommentSelect(CommentVO cv) throws SQLException{
+		return commentDao.CommentSelect(cv);
+	}
+
+	@Override
+	public int CommentInsert(CommentVO cv) throws SQLException {
+		return commentDao.CommentInsert(cv);
+	}
+
+	@Override
+	public int CommentDelete(String commentCode) throws SQLException {
+		return commentDao.CommentDelete(commentCode);
+	}
+
+	@Override
+	public int CommentUpdate(CommentVO cv) throws SQLException {
+		return commentDao.CommentUpdate(cv);
+	}
+
+	
+}

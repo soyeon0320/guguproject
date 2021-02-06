@@ -1,0 +1,33 @@
+package handler.jobfair;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import common.CommonHandler;
+import service.JobfairService;
+import serviceImpl.JobfairServiceImpl;
+import vo.JobfairVO;
+
+public class JobfairListHandler implements CommonHandler{
+
+	private JobfairService jobfairService = new JobfairServiceImpl();
+	
+	@Override
+	public boolean RedirectYn(HttpServletRequest req) {
+		return false;
+	}
+
+	@Override
+	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		String url = "/WEB-INF/view/jobfair/jobfairList.jsp";
+		
+		List<JobfairVO> jobfairList = jobfairService.jobfairAllSelect();
+
+		req.setAttribute("jobfairList", jobfairList);		
+		
+		return url;
+	}
+	
+}

@@ -1,0 +1,35 @@
+package handler.resume;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import common.CommonHandler;
+import service.ResumeService;
+import serviceImpl.ResumeServiceImpl;
+
+public class ResumeDeleteHandler implements CommonHandler {
+
+	@Override
+	public boolean RedirectYn(HttpServletRequest req) {
+		return true;
+	}
+
+	@Override
+	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		String code = req.getParameter("code");
+		
+		ResumeService resumeService = ResumeServiceImpl.getInstance();
+		
+		int resCnt = resumeService.ResumeDelete(code);
+		
+		String message = "";
+		if(resCnt > 0) {
+			message = "success";
+		}else {
+			message = "fail";
+		}
+		
+		return req.getContextPath() + "/resume/list.do?message=" + message;
+	}
+
+}

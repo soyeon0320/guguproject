@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="login">
+
+<resultMap class="vo.MemberVO" id="memberLoginResultMap">
+	<result property="memberId"		column="MEMBER_ID"/>
+	<result property="memberName"	column="MEMBER_NAME"/>
+	<result property="memberBirth"	column="MEMBER_BIRTH"/>
+	<result property="memberPw"		column="MEMBER_PW"/>
+	<result property="memberGender" column="MEMBER_GENDER"/>
+	<result property="memberPhone"	column="MEMBER_PHONE"/>
+	<result property="memberEmail"	column="MEMBER_EMAIL"/>
+	<result property="memberAddr1"	column="MEMBER_ADDR1"/>
+	<result property="memberAddr2"	column="MEMBER_ADDR2"/>
+	<result property="memberQuit"	column="MEMBER_QUIT"/>
+</resultMap>
+
+<resultMap class="vo.AdminVO" id="adminLoginResultMap">
+	<result property="adminId"	column="ADMIN_ID"/>
+	<result property="adminPw"	column="ADMIN_PW"/>
+	<result property="adminName"	column="ADMIN_NAME"/>
+	<result property="adminEamil"	column="ADMIN_EAMIL"/>
+	<result property="adminPhone"	column="ADMIN_PHONE"/>
+</resultMap>
+
+<select id="memberLogin" parameterClass="vo.MemberVO" resultMap="memberLoginResultMap">
+	SELECT * FROM MEMBER
+	WHERE MEMBER_ID = #memberId#
+	AND MEMBER_PW  = #memberPw#
+</select>
+
+<select id="adminLogin" parameterClass="vo.AdminVO" resultMap="adminLoginResultMap">
+	SELECT * FROM ADMIN
+	WHERE ADMIN_ID = #adminId#
+	AND ADMIN_PW = #adminPw#
+</select>
+
+</sqlMap>

@@ -1,0 +1,13 @@
+package dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import vo.BoardManagerVO;
+
+public interface BoardManagerDAO {
+	
+	public List<BoardManagerVO> list (SqlMapClient smc, String searchData) throws SQLException;
+}

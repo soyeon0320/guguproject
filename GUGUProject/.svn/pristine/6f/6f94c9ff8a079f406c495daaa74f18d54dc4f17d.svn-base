@@ -1,0 +1,44 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>채용설명회 등록</title>
+</head>
+<body>
+	<form action="/GUGUProject/jobfair/insert.do" method="post" >
+		<table>
+			<tr>
+				<td>분류:</td>
+				<td>
+					<select name="jobfairGroup">
+						<option value="설명회">설명회</option>
+						<option value="잡페어">잡페어</option>
+						<option value="상담회">상담회</option>
+					</select>
+				
+				</td>
+			</tr>
+			<tr>
+				<td>설명회명:</td>
+				<td><input type="text" name="jobfairTitle" value=""></td>
+			</tr>
+			<tr>
+				<td>일시:</td>
+				<td><input type="text" name="jobfairStartdate" value="">~<input type="text" name="jobfairEnddate" value=""></td>
+			</tr>
+			<tr>
+				<td>장소:</td>
+				<td><input type="text" name="jobfairPlace" value="" ></input></td>
+			</tr>			<tr>
+				<td>기업명:</td>
+				<td><input type="text" name="companyName" value="" ></input></td>
+			</tr>
+			
+		</table>
+		<input type="submit" value="등록">
+	
+	</form>
+</body>
+</html>

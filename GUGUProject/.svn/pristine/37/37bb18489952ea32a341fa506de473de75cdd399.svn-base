@@ -1,0 +1,16 @@
+package service;
+
+import java.sql.SQLException;
+import java.util.List;
+import vo.CommentVO;
+import vo.FunBoardVO;
+
+public interface CommentService {
+	public List<CommentVO> CommentSelect(CommentVO cv) throws SQLException;
+	
+	public int CommentInsert(CommentVO cv) throws SQLException;
+	
+	public int CommentDelete(String commentCode) throws SQLException;
+	
+	public int CommentUpdate(CommentVO cv) throws SQLException;
+}

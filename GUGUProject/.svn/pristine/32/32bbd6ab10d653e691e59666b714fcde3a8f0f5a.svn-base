@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="notis">
+	<resultMap class="NotisVO" id="notisMap">
+		<result property="code" column="NOTIS_CODE"/>
+		<result property="title" column="NOTIS_TITLE"/>
+		<result property="content" column="NOTIS_CONTENT"/>
+		<result property="regDate" column="NOTIS_REGDATE"/>
+		<result property="adminId" column="ADMIN_ID"/>
+		<result property="manager" column="MANAGER"/>
+	</resultMap>
+	
+	<select id="notisList" resultMap="notisMap">
+		SELECT *
+<!-- 		 NOTIS_CODE,NOTIS_CONTENT,NOTIS_TITLE,NOTIS_REGDATE,ADMIN_ID -->
+		FROM NOTIS
+	</select>
+	
+	<insert id="insert" parameterClass="NotisVO">
+		insert into notis (NOTIS_CODE,NOTIS_CONTENT,NOTIS_TITLE,NOTIS_REGDATE,ADMIN_ID)
+		values ('N'||NO_N.nextval,#content#,#title#,#regDate#,#adminId#)
+	</insert>
+	
+	<select id="searchCode" resultMap="notisMap">
+		select *
+<!-- 		NOTIS_CODE,NOTIS_CONTENT, NOTIS_TITLE, NOTIS_REGDATE,ADMIN_ID -->
+		from notis
+		where NOTIS_CODE=#code#
+	</select>
+	
+	<update id="update" parameterClass="NotisVO">
+		update notis set
+			NOTIS_CONTENT=#content#,
+			NOTIS_TITLE=#title#
+		where NOTIS_CODE=#code#
+	</update>
+	
+	<delete id="delete" parameterClass="String">
+		delete from notis
+		where NOTIS_CODE=#code#
+	</delete>
+</sqlMap>
+
+
+
+
+

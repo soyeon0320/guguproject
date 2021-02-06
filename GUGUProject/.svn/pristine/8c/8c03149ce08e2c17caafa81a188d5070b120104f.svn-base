@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="boardManager">
+
+	<resultMap class="BoardManagerVO" id="BoardManagerMap">
+		<result property="searchName" column="SEARCHNAME"/>
+		
+		<result property="c" column="GORY_C"/>
+		<result property="f" column="GORY_F"/>
+		<result property="b" column="GORY_B"/>
+		<result property="r" column="GORY_R"/>
+		<result property="e" column="GORY_E"/>
+		<result property="n" column="GORY_N"/>
+		
+		<result property="code" column="COMPANY_CODE"/>
+		<result property="name" column="COMPANY_NAME"/>
+		<result property="title" column="COMPANY_TITLE"/>
+		<result property="career" column="COMPANY_CAREER"/>
+		<result property="educstion" column="COMPANY_EDUCSTION"/>
+		<result property="employment" column="COMPANY_EMPLOYMENT"/>
+		<result property="salary" column="COMPANY_SALARY"/>
+		<result property="area" column="COMPANY_AREA"/>
+		<result property="business" column="COMPANY_BUSINESS"/>
+		<result property="employees" column="COMPANY_EMPLOYEES"/>
+		<result property="estab" column="COMPANY_ESTAB"/>
+		<result property="homepage" column="COMPANY_HOMEPAGE"/>
+		<result property="regdate" column="COMPANY_REGDATE"/>
+		<result property="lastdate" column="COMPANY_LASTDATE"/>
+		
+		<result property="jobfairCode" column="JOBFAIR_CODE"/>
+		<result property="jobfairGroup" column="JOBFAIR_GROUP"/>
+		<result property="jobfairTitle" column="JOBFAIR_TITLE"/>
+		<result property="jobfairStartdate" column="JOBFAIR_STARTDATE"/>
+		<result property="jobfairEnddate" column="JOBFAIR_ENDDATE"/>
+		<result property="jobfairPlace" column="JOBFAIR_PLACE"/>
+		<result property="companyCode" column="COMPANY_CODE"/>
+		<result property="companyName" column="COMPANY_NAME"/>
+		<result property="manager" column="MANAGER"/>
+	</resultMap>
+	
+	<resultMap class="CompanyVO" id="BoardManagerVO" extends="BoardManagerMap">
+		<result property="code" column="COMPANY_CODE"/>
+		<result property="name" column="COMPANY_NAME"/>
+		<result property="title" column="COMPANY_TITLE"/>
+		<result property="career" column="COMPANY_CAREER"/>
+		<result property="educstion" column="COMPANY_EDUCSTION"/>
+		<result property="employment" column="COMPANY_EMPLOYMENT"/>
+		<result property="salary" column="COMPANY_SALARY"/>
+		<result property="area" column="COMPANY_AREA"/>
+		<result property="business" column="COMPANY_BUSINESS"/>
+		<result property="employees" column="COMPANY_EMPLOYEES"/>
+		<result property="estab" column="COMPANY_ESTAB"/>
+		<result property="homepage" column="COMPANY_HOMEPAGE"/>
+		<result property="regdate" column="COMPANY_REGDATE"/>
+		<result property="lastdate" column="COMPANY_LASTDATE"/>
+		<result property="manager" column="MANAGER"/>
+	</resultMap>
+	
+	<resultMap class="JobfairVO" id="BoardManagerVO" extends="BoardManagerMap">
+		<result property="jobfairCode" column="JOBFAIR_CODE"/>
+		<result property="jobfairGroup" column="JOBFAIR_GROUP"/>
+		<result property="jobfairTitle" column="JOBFAIR_TITLE"/>
+		<result property="jobfairStartdate" column="JOBFAIR_STARTDATE"/>
+		<result property="jobfairEnddate" column="JOBFAIR_ENDDATE"/>
+		<result property="jobfairPlace" column="JOBFAIR_PLACE"/>
+		<result property="companyCode" column="COMPANY_CODE"/>
+		<result property="companyName" column="COMPANY_NAME"/>
+		<result property="manager" column="MANAGER"/>
+	</resultMap>
+	
+	<select id="list" resultMap="BoardManagerMap">
+		SELECT DISTINCT 
+		    C.COMPANY_NAME,
+		    C.COMPANY_EMPLOYMENT,
+		    C.COMPANY_SALARY,
+		    C.COMPANY_AREA
+		FROM BOARD_MANAGEMENT A , COMPANY C
+			WHERE A.GORY_C = C.MANAGER
+				AND REGEXP_LIKE (C.COMPANY_NAME, '||searchName||||')
+				OR REGEXP_LIKE (C.COMPANY_TITLE, '||searchName||')
+				OR REGEXP_LIKE (C.COMPANY_EMPLOYMENT, '||searchName||')
+				OR REGEXP_LIKE (C.COMPANY_SALARY, '||searchName||')
+				OR REGEXP_LIKE (C.COMPANY_AREA, '||searchName||')
+	</select>
+	
+</sqlMap>
+
+
+
+
+
+
+
+

@@ -1,0 +1,30 @@
+package service;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import dao.JobfairDAO;
+import vo.JobfairVO;
+
+public interface JobfairService {
+
+	public List<JobfairVO> jobfairAllSelect();
+
+	public int jobfairInsert(JobfairVO jv);
+
+	public int jobfairDelete(String jobfairCode);
+
+	public List<JobfairVO> getSearchJobfair(JobfairVO jv);
+
+	public int jobfairUpdate(JobfairVO jv);
+
+	
+	
+
+	}
+
+
+
+	
+	
+

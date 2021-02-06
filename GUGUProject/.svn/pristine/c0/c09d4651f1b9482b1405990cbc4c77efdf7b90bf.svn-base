@@ -1,0 +1,46 @@
+package serviceImpl;
+
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
+import com.ibatis.sqlmap.client.SqlMapClient;
+import dao.LicenseDAO;
+import daoImpl.LicenseDAOImpl;
+import service.LicenseService;
+import util.SqlMapClientFactory;
+import vo.LicenseVO;
+
+public class LicenseServiceImpl implements LicenseService{
+	private static LicenseService licenseService;
+	private LicenseDAO licenseDao;
+	private SqlMapClient smc;
+	
+	public static LicenseService getInstance() {
+		if(licenseService==null) {
+			licenseService = new LicenseServiceImpl();
+		}
+		return licenseService;
+	}
+	
+	public LicenseServiceImpl() {
+		licenseDao = LicenseDAOImpl.getInstance();
+		smc = SqlMapClientFactory.getInstance();
+	}
+
+	@Override
+	public List<LicenseVO> ResumeLicenseSelect(LicenseVO lv) {
+		List<LicenseVO> licenseList = Collections.EMPTY_LIST;
+		try {
+			licenseList = licenseDao.ResumeLicenseSelect(smc, lv);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return licenseList;
+	}
+
+	
+
+	
+	
+	
+}

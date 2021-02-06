@@ -1,0 +1,31 @@
+package serviceImpl;
+
+import java.util.Collections;
+import java.util.List;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import dao.BoardManagerDAO;
+import service.BoardManagerService;
+import vo.BoardManagerVO;
+
+public class BoardManagerServiceImpl implements BoardManagerService {
+
+	private static BoardManagerService bms;
+	private BoardManagerDAO dao;
+	private SqlMapClient smc;
+	
+	@Override
+	public List<BoardManagerVO> list(String searchData) {
+		List<BoardManagerVO> list = Collections.emptyList();
+	
+		try {
+			list = dao.list(smc,searchData);
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("전체 검색 조회 중 오류",e);
+		}
+		return list;
+	}
+
+}

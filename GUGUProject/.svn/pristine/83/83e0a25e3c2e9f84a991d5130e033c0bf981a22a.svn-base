@@ -1,0 +1,69 @@
+package daoImpl;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import com.ibatis.sqlmap.client.SqlMapClient;
+import dao.FunBoardDAO;
+import vo.FunBoardVO;
+import vo.PagingVO;
+
+public class FunBoardDAOImpl implements FunBoardDAO{
+	private static FunBoardDAO funBoardDao;
+	
+	private FunBoardDAOImpl() {
+		
+	}
+	
+	public static FunBoardDAO getInstance() {
+		if(funBoardDao==null) {
+			funBoardDao = new FunBoardDAOImpl();
+		}
+		return funBoardDao;
+	}
+	
+	public List<FunBoardVO> FunBoardAllSelect(SqlMapClient smc, PagingVO pv) throws SQLException {
+		List<FunBoardVO> funBoardList = new ArrayList<FunBoardVO>();
+		funBoardList = smc.queryForList("funBoard.FunBoardAllSelect", pv);
+		return funBoardList;
+	}
+	
+	@Override
+	public int FunBoardAllSelectCount(SqlMapClient smc) throws SQLException {
+		int resCnt = (int)smc.queryForObject("funBoard.FunBoardAllSelectCount");
+		return resCnt;
+	}
+
+	@Override
+	public List<FunBoardVO> FunBoardSelect(SqlMapClient smc, FunBoardVO fbv) throws SQLException {
+		List<FunBoardVO> funBoardList = new ArrayList<FunBoardVO>();
+		funBoardList = smc.queryForList("funBoard.FunBoardSelect", fbv);
+		return funBoardList;
+	}
+
+	@Override
+	public int FunBoardInsert(SqlMapClient smc, FunBoardVO fbv) throws SQLException {
+		int resCnt = 0;
+		Object obj = smc.insert("funBoard.FunBoardInsert", fbv);
+		if(obj == null) {
+			resCnt = 1;
+		}
+		return resCnt;
+	}
+
+	@Override
+	public int FunBoardUpdate(SqlMapClient smc, FunBoardVO fbv) throws SQLException {
+		int resCnt = 0;
+		resCnt = smc.update("funBoard.FunBoardUpdate", fbv);
+		return resCnt;
+	}
+
+	@Override
+	public int FunBoardDelete(SqlMapClient smc, String funBoardCode) throws SQLException {
+		int resCnt = 0;
+		resCnt = smc.delete("funBoard.FunBoardDelete", funBoardCode);
+		return resCnt;
+	}
+
+	
+}

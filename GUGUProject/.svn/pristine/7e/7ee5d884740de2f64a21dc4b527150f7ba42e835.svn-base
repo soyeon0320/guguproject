@@ -1,0 +1,18 @@
+package service;
+
+import java.util.List;
+
+import vo.PagingVO;
+import vo.ResumeVO;
+
+public interface ResumeService {
+	public List<ResumeVO> ResumeAllSelect(PagingVO pv);
+	
+	public int ResumeAllSelectCount();
+	
+	public List<ResumeVO> ResumeSelect(ResumeVO rv);
+	
+	public int ResumeInsert(ResumeVO rv);
+	
+	public int ResumeDelete(String resumeCode);
+}

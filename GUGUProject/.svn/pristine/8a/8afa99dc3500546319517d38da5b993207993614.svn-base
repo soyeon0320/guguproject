@@ -1,0 +1,98 @@
+package vo;
+
+public class ApplyVO {
+	private String careerTitle;
+	private String careerDate;
+	private String careerIsAdd;
+	private String introTitle;
+	private String introDate;
+	private String introIsAdd;
+	private String companyTitle;
+	private String companyEmail;
+	private String companyIsAdd;
+	private String memberId;
+	private String careerCode;
+	private String introCode;
+	private String companyCode;
+	
+	public String getCareerCode() {
+		return careerCode;
+	}
+	public void setCareerCode(String careerCode) {
+		this.careerCode = careerCode;
+	}
+	public String getIntroCode() {
+		return introCode;
+	}
+	public void setIntroCode(String introCode) {
+		this.introCode = introCode;
+	}
+	public String getCompanyCode() {
+		return companyCode;
+	}
+	public void setCompanyCode(String companyCode) {
+		this.companyCode = companyCode;
+	}
+		
+	public String getCompanyEmail() {
+		return companyEmail;
+	}
+	public void setCompanyEmail(String companyEmail) {
+		this.companyEmail = companyEmail;
+	}
+	public String getCareerTitle() {
+		return careerTitle;
+	}
+	public void setCareerTitle(String careerTitle) {
+		this.careerTitle = careerTitle;
+	}
+	public String getCareerDate() {
+		return careerDate;
+	}
+	public void setCareerDate(String careerDate) {
+		this.careerDate = careerDate;
+	}
+	public String getCareerIsAdd() {
+		return careerIsAdd;
+	}
+	public void setCareerIsAdd(String careerIsAdd) {
+		this.careerIsAdd = careerIsAdd;
+	}
+	public String getIntroTitle() {
+		return introTitle;
+	}
+	public void setIntroTitle(String introTitle) {
+		this.introTitle = introTitle;
+	}
+	public String getIntroDate() {
+		return introDate;
+	}
+	public void setIntroDate(String introDate) {
+		this.introDate = introDate;
+	}
+	public String getIntroIsAdd() {
+		return introIsAdd;
+	}
+	public void setIntroIsAdd(String introIsAdd) {
+		this.introIsAdd = introIsAdd;
+	}
+	public String getCompanyTitle() {
+		return companyTitle;
+	}
+	public void setCompanyTitle(String companyTitle) {
+		this.companyTitle = companyTitle;
+	}
+	public String getCompanyIsAdd() {
+		return companyIsAdd;
+	}
+	public void setCompanyIsAdd(String companyIsAdd) {
+		this.companyIsAdd = companyIsAdd;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
+}

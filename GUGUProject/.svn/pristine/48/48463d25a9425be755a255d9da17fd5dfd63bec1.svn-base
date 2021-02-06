@@ -1,0 +1,23 @@
+package dao;
+
+import java.sql.SQLException;
+import java.util.List;
+import com.ibatis.sqlmap.client.SqlMapClient;
+import vo.FunBoardVO;
+import vo.PagingVO;
+
+public interface FunBoardDAO {
+	public List<FunBoardVO> FunBoardAllSelect(SqlMapClient smc, PagingVO pv) throws SQLException;
+	
+	public int FunBoardAllSelectCount(SqlMapClient smc) throws SQLException;
+
+	public List<FunBoardVO> FunBoardSelect(SqlMapClient smc, FunBoardVO fbv) throws SQLException;
+	
+	public int FunBoardInsert(SqlMapClient smc, FunBoardVO fbv) throws SQLException;
+	
+	public int FunBoardUpdate(SqlMapClient smc, FunBoardVO fbv) throws SQLException;
+	
+	public int FunBoardDelete(SqlMapClient smc, String funBoardCode) throws SQLException;
+	
+	
+}

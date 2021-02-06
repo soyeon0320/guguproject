@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="faq">
+
+	<resultMap class="FaqVO" id="faqMap">
+		<result property="code"  column="FAQ_CODE"/>
+		<result property="question"  column="FAQ_QUESTION"/>
+		<result property="answer"  column="FAQ_ANSWER"/>
+		<result property="adminId"  column="ADMIN_ID"/>
+		<result property="manager"  column="MANAGER"/>
+	</resultMap>
+	
+<!-- 	<select id="faqList" resultMap="faqMap">  -->
+<!-- 		SELECT a.FAQ_CODE, a.admin_id, a.FAQ_QUESTION, a.FAQ_ANSWER, b.ADMIN_NAME FROM FAQ A, ADMIN B WHERE A.ADMIN_ID = B.ADMIN_ID -->
+<!-- 			SELECT * FROM FAQ -->
+<!-- 	</select> -->
+	
+	<insert id="insertFaq" parameterClass="FaqVO">
+		insert into faq (FAQ_CODE,FAQ_QUESTION,FAQ_ANSWER,ADMIN_ID)
+		values ('F'||NO_FAQ.nextval,#question#,#answer#,#adminId#)
+	</insert>
+	
+	<select id="searchCode" resultMap="faqMap">
+		SELECT *
+		 FROM FAQ WHERE FAQ_CODE = #code#
+	</select>
+	
+	<update id="update" parameterClass="FaqVO">
+		update FAQ set 
+			FAQ_QUESTION = #question#,
+			FAQ_ANSWER = #answer#,
+			ADMIN_ID = #adminId#
+<!-- 		ADMIN_NAME = #adminName# -->
+		where FAQ_CODE = #code#
+	</update>
+	<delete id="delete" parameterClass="String">
+		delete from faq
+		where FAQ_CODE = #code#
+	</delete>
+</sqlMap>

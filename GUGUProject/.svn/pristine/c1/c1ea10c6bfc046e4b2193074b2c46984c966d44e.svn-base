@@ -1,0 +1,61 @@
+package daoImpl;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import com.ibatis.sqlmap.client.SqlMapClient;
+import dao.CommentDAO;
+import util.SqlMapClientFactory;
+import vo.CommentVO;
+
+public class CommentDAOImpl implements CommentDAO{
+	private static CommentDAO commentDao;
+	private SqlMapClient smc;
+	
+	public CommentDAOImpl() {
+		smc = SqlMapClientFactory.getInstance();
+	}
+	
+	public static CommentDAO getInstance() {
+		if(commentDao==null) {
+			commentDao = new CommentDAOImpl();
+		}
+		return commentDao;
+	}
+
+	@Override
+	public List<CommentVO> CommentSelect(CommentVO cv) throws SQLException {
+		List<CommentVO> commentList = Collections.emptyList();
+		commentList = smc.queryForList("funBoard.CommentAllSelect", cv);
+		return commentList;
+	}
+
+	@Override
+	public int CommentInsert(CommentVO cv) throws SQLException {
+		int resCnt = 0;
+		Object obj = smc.insert("funBoard.CommentInsert", cv);
+		if(obj == null) {
+			resCnt = 1;
+		}
+		return resCnt;
+	}
+
+	@Override
+	public int CommentDelete(String commentCode) throws SQLException {
+		int resCnt = 0;
+		resCnt = smc.delete("funBoard.CommentDelete", commentCode);
+		return resCnt;
+	}
+
+	@Override
+	public int CommentUpdate(CommentVO cv) throws SQLException {
+		int resCnt = 0;
+		resCnt = smc.update("funBoard.CommentUpdate", cv);
+		return resCnt;
+	}
+
+	
+
+	
+}

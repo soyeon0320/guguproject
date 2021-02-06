@@ -1,0 +1,40 @@
+package handler.notis;
+
+import java.net.URLEncoder;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import common.CommonHandler;
+import service.NotisService;
+import serviceImpl.NotisServiceImpl;
+/**
+ * 공지사항 삭제 페이지
+ * @author 송 지은
+ */
+public class NotisDeleteHandler implements CommonHandler{
+
+	@Override
+	public boolean RedirectYn(HttpServletRequest req) {
+		return false;
+	}
+
+	@Override
+	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		
+		NotisService ns = NotisServiceImpl.getInstance();
+		String code = req.getParameter("code");
+		int cnt = ns.delete(code);
+		
+		String msg = "";
+		if (cnt > 0) {
+			msg = "성공";
+		} else {
+			msg = "실패";
+		}
+		
+		String url = "/notis/notisAdminList.do?msg="+URLEncoder.encode("UTF-8");
+		return url;
+	}
+
+}

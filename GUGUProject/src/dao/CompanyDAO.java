@@ -1,0 +1,21 @@
+package dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import vo.CompanyVO;
+
+public interface CompanyDAO {
+	
+	public  List<CompanyVO> companyList(SqlMapClient smc) throws SQLException;
+	
+	public List<CompanyVO> select(SqlMapClient smc, CompanyVO vo) throws SQLException;
+	
+	public int insert(SqlMapClient smc, CompanyVO vo) throws SQLException;
+	
+	public int modify(SqlMapClient smc, CompanyVO vo) throws SQLException;
+	
+	public int delete(SqlMapClient smc, String code) throws SQLException;
+}

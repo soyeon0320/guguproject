@@ -1,0 +1,116 @@
+package vo;
+
+/**
+ * 기업 VO
+ * @author ksy
+ */
+public class CompanyVO {
+	
+	private String code;
+	private String name; // 기업명
+	private String title; // 제목
+	private String career; // 경력
+	private String educstion; // 학력
+	private String employment; // 고용형태
+	private String salary; // 급여
+	private String area; // 지역
+	private String business; // 산업(업종)
+	private String employees; // 사원수
+	private String estab; // 기업형태
+	private String homepage; // 홈페이지
+	private String regdate; // 등록일
+	private String lastdate; // 종료일
+	private String manager;
+	
+	public String getManager() {
+		return manager;
+	}
+	public void setManager(String manager) {
+		this.manager = manager;
+	}
+	public String getRegdate() {
+		return regdate;
+	}
+	public void setRegdate(String regdate) {
+		this.regdate = regdate;
+	}
+	public String getLastdate() {
+		return lastdate;
+	}
+	public void setLastdate(String lastdate) {
+		this.lastdate = lastdate;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getCareer() {
+		return career;
+	}
+	public void setCareer(String career) {
+		this.career = career;
+	}
+	public String getEducstion() {
+		return educstion;
+	}
+	public void setEducstion(String educstion) {
+		this.educstion = educstion;
+	}
+	public String getEmployment() {
+		return employment;
+	}
+	public void setEmployment(String employment) {
+		this.employment = employment;
+	}
+	public String getSalary() {
+		return salary;
+	}
+	public void setSalary(String salary) {
+		this.salary = salary;
+	}
+	public String getArea() {
+		return area;
+	}
+	public void setArea(String area) {
+		this.area = area;
+	}
+	public String getBusiness() {
+		return business;
+	}
+	public void setBusiness(String business) {
+		this.business = business;
+	}
+	public String getEmployees() {
+		return employees;
+	}
+	public void setEmployees(String employees) {
+		this.employees = employees;
+	}
+	public String getEstab() {
+		return estab;
+	}
+	public void setEstab(String estab) {
+		this.estab = estab;
+	}
+	public String getHomepage() {
+		return homepage;
+	}
+	public void setHomepage(String homepage) {
+		this.homepage = homepage;
+	}
+	
+}

@@ -1,0 +1,14 @@
+package dao;
+
+import java.sql.SQLException;
+import java.util.List;
+import com.ibatis.sqlmap.client.SqlMapClient;
+import vo.LicenseVO;
+
+public interface LicenseDAO{
+	public List<LicenseVO> ResumeLicenseSelect(SqlMapClient smc, LicenseVO lv) throws SQLException;
+	
+	public int ResumeLicenseInsert(SqlMapClient smc, LicenseVO lv) throws SQLException;
+	
+	public int ResumeLicenseUpdate(SqlMapClient smc, LicenseVO lv) throws SQLException;
+}

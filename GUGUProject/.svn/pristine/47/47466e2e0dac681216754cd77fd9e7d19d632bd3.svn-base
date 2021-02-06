@@ -1,0 +1,52 @@
+package daoImpl;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import com.ibatis.sqlmap.client.SqlMapClient;
+import dao.CareerDAO;
+import vo.CareerVO;
+
+public class CareerDAOImpl implements CareerDAO{
+	private static CareerDAO careerDao;
+	
+	public CareerDAOImpl() {
+		
+	}
+	
+	public static CareerDAO getInstance() {
+		if(careerDao==null) {
+			careerDao = new CareerDAOImpl();
+		}
+		return careerDao;
+	}
+
+	@Override
+	public List<CareerVO> ResumeCareerSelect(SqlMapClient smc, CareerVO cv) throws SQLException {
+		List<CareerVO> careerList = new ArrayList<CareerVO>();
+		careerList = smc.queryForList("resume.ResumeCareerSelect", cv);
+		return careerList;
+	}
+
+	@Override
+	public int ResumeCareerInsert(SqlMapClient smc, CareerVO cv) throws SQLException {
+		int resCnt = 0;
+		Object obj = smc.insert("resume.ResumeCareerInsert", cv);
+		if(obj==null) {
+			resCnt = 1;
+		}
+		return resCnt;
+	}
+
+	@Override
+	public int ResumeCareerUpdate(SqlMapClient smc, CareerVO cv) throws SQLException {
+		int resCnt = smc.update("resume.ResumeCareerUpdate", cv);
+		return resCnt;
+	}
+
+	@Override
+	public int ResumeCareerDelete(SqlMapClient smc, String careerCode) throws SQLException {
+		int resCnt = smc.delete("resume.ResumeCareerDelete", careerCode);
+		return resCnt;
+	}
+}

@@ -1,0 +1,141 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>1:1문의 채팅방</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/GUGUProject/plugins/css/all.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="/GUGUProject/plugins/css/icheck-bootstrap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/GUGUProject/dist/css/adminlte.min.css">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="/GUGUProject/plugins/css/OverlayScrollbars.min.css">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+<style type="text/css">/* Chart.js */
+@keyframes chartjs-render-animation{from{opacity:.99}to{opacity:1}}.chartjs-render-monitor{animation:chartjs-render-animation 1ms}.chartjs-size-monitor,.chartjs-size-monitor-expand,.chartjs-size-monitor-shrink{position:absolute;direction:ltr;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1}.chartjs-size-monitor-expand>div{position:absolute;width:1000000px;height:1000000px;left:0;top:0}.chartjs-size-monitor-shrink>div{position:absolute;width:200%;height:200%;left:0;top:0}</style></head>
+<title>Insert title here</title>
+<body>
+<h1>테스트 페이지</h1>
+<div class="card direct-chat direct-chat-primary col-sm-6 container-fluid " style= "float:none; margin:0 auto" >
+              <div class="card-header ui-sortable-handle" style="cursor: move;">
+                <h3 class="card-title">Direct Chat</h3>
+
+                <div class="card-tools">
+                  <span data-toggle="tooltip" title="3 New Messages" class="badge badge-primary">3</span>
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-toggle="tooltip" title="Contacts" data-widget="chat-pane-toggle">
+                    <i class="fas fa-comments"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              
+              <div class="card-body">
+                <!-- Conversations are loaded here -->
+                <div class="direct-chat-messages">
+                
+                  <!-- Message. Default to the left -->
+                  <div class="direct-chat-msg">
+                    <div class="direct-chat-infos clearfix">
+                      <span class="direct-chat-name float-left">Alexander Pierce</span>
+                      <span class="direct-chat-timestamp float-right">23 Jan 2:00 pm</span>
+                    </div>
+                    <!-- /.direct-chat-infos -->
+                    <img class="direct-chat-img" src="/GUGUProject/assets/images/avatars/10.jpg" alt="message user image">
+                    <!-- /.direct-chat-img -->
+                    <div class="direct-chat-text">
+                      Is this template really for free? That's unbelievable!
+                    </div>
+                    <!-- /.direct-chat-text -->
+                  </div>
+                  <!-- /.direct-chat-msg -->
+
+                  <!-- Message to the right -->
+                  <div class="direct-chat-msg right">
+                    <div class="direct-chat-infos clearfix">
+                      <span class="direct-chat-name float-right">Sarah Bullock</span>
+                      <span class="direct-chat-timestamp float-left">23 Jan 2:05 pm</span>
+                    </div>
+                    <!-- /.direct-chat-infos -->
+                    <img class="direct-chat-img" src="/GUGUProject/assets/images/avatars/12.jpg" alt="message user image">
+                    <!-- /.direct-chat-img -->
+                    <div class="direct-chat-text">
+                      You better believe it!
+                    </div>
+                    <!-- /.direct-chat-text -->
+                  </div>
+                  <!-- /.direct-chat-msg -->
+
+                </div>
+                <!--/.direct-chat-messages-->
+                
+                <!-- /.direct-chat-pane -->
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <form action="#" method="post">
+                  <div class="input-group">
+                    <input id="message" type="text" name="message" placeholder="Type Message ..." class="form-control" autofocus>
+                    <span class="input-group-append">
+                      <button type="button" class="btn btn-primary" onclick="sendMsg()">Send</button>
+                    </span>
+                  </div>
+                </form>
+              </div>
+              <!-- /.card-footer-->
+            </div>
+
+</body>
+<script src="/GUGUProject/plugins/js/jquery.min.js"></script>
+<script src="/GUGUProject/plugins/js/jquery-ui.min.js"></script>
+<script src="/GUGUProject/plugins/js/bootstrap.bundle.min.js"></script>
+<script src="/GUGUProject/plugins/js/adminlte.js"></script>
+<script src="/GUGUProject/plugins/js/demo.js"></script>
+<script src="/GUGUProject/plugins/js/OverlayScrollbars.min.js"></script>
+
+<script>
+
+
+function sendMsg() {
+	
+	var msg = $("#message").val();
+	var time = "10:00";
+	var userName = "스벅킴";
+	var userImgSrc = "/GUGUProject/assets/images/avatars/12.jpg";
+
+	var userMsgDiv = $('<div class="direct-chat-msg right">'
+						+'<div class="direct-chat-infos clearfix">'
+	  					+	'<span class="direct-chat-name float-right">'+userName+'</span>'
+	  					+	'<span class="direct-chat-timestamp float-left">'+time+'</span>'
+						+'</div>'
+						+'<img class="direct-chat-img" src="'+userImgSrc+'" alt="message user image">'
+						+'<div class="direct-chat-text text-right">'
+						+  msg
+						+'</div>'
+				  +'</div>');
+				  
+	$(".direct-chat-messages").append(userMsgDiv);
+	
+}
+
+
+</script>
+
+
+
+
+
+</html>

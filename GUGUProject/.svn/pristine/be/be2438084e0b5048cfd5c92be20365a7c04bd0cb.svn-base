@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="member">
+	<resultMap class="memberVO" id="memberMap">
+		<result property="memberId" column="MEMBER_ID"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="memberBirth" column="MEMBER_BIRTH"/>
+		<result property="memberPw" column="MEMBER_PW"/>
+		<result property="memberGender" column="MEMBER_GENDER"/>
+		<result property="memberPhone" column="MEMBER_PHONE"/>
+		<result property="memberEmail" column="MEMBER_EMAIL"/>
+		<result property="memberAddr1" column="MEMBER_ADDR1"/>
+		<result property="memberAddr2" column="MEMBER_ADDR2"/>
+<!-- 		<result property="memberQuit" column="MEMBER_QUIT"/> -->
+	</resultMap>
+	
+	<insert id="insertMember" parameterClass="MemberVO">
+		INSERT INTO MEMBER (MEMBER_ID,MEMBER_NAME,MEMBER_BIRTH,MEMBER_PW,MEMBER_GENDER,MEMBER_PHONE,MEMBER_EMAIL,MEMBER_ADDR1,MEMBER_ADDR2,MEMBER_QUIT)
+		VALUES (#memberId#,#memberName#,#memberBirth#,#memberPw#,#memberGender#,#memberPhone#,#memberEmail#,#memberAddr1#,#memberAddr2#,'N')
+	</insert>
+	
+	<select id="memberIdCheck" parameterClass="String" resultMap="memberMap">
+		SELECT MEMBER_ID FROM MEMBER WHERE MEMBER_ID = #memberId#
+	</select>
+	
+	<select id="memberAllSelect" resultMap="memberMap">
+		SELECT AA.*
+	  	  FROM (SELECT A.*, rownum AS rnum FROM MEMBER A) AA
+	 	 WHERE AA.rnum BETWEEN #firstRectNo# and #lastRectNo#
+	</select>
+	
+	<select id="memberAllSelectCount" resultClass="int">
+		SELECT COUNT(*) FROM MEMBER
+	</select>
+	
+	<select id="memberSelect" resultMap="memberMap">
+		SELECT * 
+		  FROM MEMBER
+		 WHERE MEMBER_ID = #memberId#
+	</select>
+	
+	<select id="getMember" resultMap="memberMap">
+		SELECT * FROM MEMBER
+		WHERE MEMBER_ID = #memberId# 
+	</select>
+	
+	<update id="memberUpdate" parameterClass="MemberVO">
+		UPDATE MEMBER
+		   SET MEMBER_NAME = #memberName#,
+				MEMBER_BIRTH = #memberBirth#,
+				MEMBER_GENDER = #memberGender#,
+				MEMBER_PHONE = #memberPhone#,
+				MEMBER_EMAIL = #memberEmail#,
+				MEMBER_ADDR1 = #memberAddr1#,
+				MEMBER_ADDR2 = #memberAddr2#
+		 WHERE MEMBER_ID = #memberId#
+	</update>
+	
+	<delete id="memberDelete" parameterClass="String">
+		UPDATE MEMBER
+		   SET MEMBER_QUIT = 'Y'
+		 WHERE MEMBER_ID = #memberId#
+	</delete>
+	
+</sqlMap>

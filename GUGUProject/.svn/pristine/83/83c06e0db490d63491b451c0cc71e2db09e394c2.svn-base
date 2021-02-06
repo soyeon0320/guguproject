@@ -1,0 +1,257 @@
+package handler.apply;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.StringReader;
+import java.nio.charset.Charset;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.XMLWorker;
+import com.itextpdf.tool.xml.XMLWorkerFontProvider;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
+import com.itextpdf.tool.xml.css.CssFile;
+import com.itextpdf.tool.xml.css.StyleAttrCSSResolver;
+import com.itextpdf.tool.xml.html.CssAppliers;
+import com.itextpdf.tool.xml.html.CssAppliersImpl;
+import com.itextpdf.tool.xml.html.Tags;
+import com.itextpdf.tool.xml.parser.XMLParser;
+import com.itextpdf.tool.xml.pipeline.css.CSSResolver;
+import com.itextpdf.tool.xml.pipeline.css.CssResolverPipeline;
+import com.itextpdf.tool.xml.pipeline.end.PdfWriterPipeline;
+import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
+import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
+
+import common.CommonHandler;
+
+public class PrintPDFHandler implements CommonHandler {
+
+	@Override
+	public boolean RedirectYn(HttpServletRequest req) {
+		return false;
+	}
+
+	@Override
+	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		System.out.println("하이");
+		
+		String filename = "test";
+		String htmlStr = getHtmlStr();
+		
+		
+		
+		createPdf(filename, htmlStr, req);
+		
+		
+		
+
+
+		return null;
+	}
+	
+	
+	private String getHtmlStr() {
+		String str = "<html><head>\r\n" + 
+				"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\r\n" + 
+				"<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js\"></script>\r\n" + 
+				"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no\">\r\n" + 
+				"<meta name=\"description\" content=\"This is an example dashboard created using build-in elements and components.\">\r\n" + 
+				"<meta name=\"msapplication-tap-highlight\" content=\"no\">\r\n" + 
+				"<link href=\"/GUGUProject/assets/css/main.css\" rel=\"stylesheet\">\r\n" + 
+				"<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css\">\r\n" + 
+				"<style type=\"text/css\">\r\n" + 
+				"	body {\r\n" + 
+				"		margin-left: 5%;\r\n" + 
+				"		margin-top: 3%;\r\n" + 
+				"	}\r\n" + 
+				"</style><title>이력서 상세보기</title></head>\r\n" + 
+				"\r\n" + 
+				"\r\n" + 
+				"<body style='font-family: MalgunGothic;'>\r\n" + 
+				"	<div class=\"col-lg-8\">\r\n" + 
+				"    	<div class=\"main-card mb-3 card\">\r\n" + 
+				"         	<div class=\"card-body\">\r\n" + 
+				"         		<h3 class=\"card-title\" style=\"font-size: 25px; text-align: center;\">ksb님의 이력서</h3>\r\n" + 
+				"	             <table class=\"mb-0 table table-hover\">\r\n" + 
+				"		             <tbody><tr>\r\n" + 
+				"		             	<td colspan=\"6\" style=\"font-size: 20px; text-align: center;\">DB에서 수정 테스트중</td>\r\n" + 
+				"		             </tr>\r\n" + 
+				"	              	<tr>\r\n" + 
+				"						<th colspan=\"6\" style=\"text-align: center; color: #007acc;\">인적사항</th>\r\n" + 
+				"					</tr>\r\n" + 
+				"					<tr>	\r\n" + 
+				"						<th>이름</th>\r\n" + 
+				"						<td>김스벅</td>\r\n" + 
+				"						<th>성별</th>\r\n" + 
+				"						<td colspan=\"2\">M</td>\r\n" + 
+				"					</tr>\r\n" + 
+				"					<tr>\r\n" + 
+				"						<th>생년월일</th>\r\n" + 
+				"						<td>2021-01-11 </td>\r\n" + 
+				"						<th>연락처</th>\r\n" + 
+				"						<td colspan=\"2\">01065683890</td>\r\n" + 
+				"					</tr>\r\n" + 
+				"					<tr>\r\n" + 
+				"						<th>이메일</th>\r\n" + 
+				"						<td>gugusystem2@naver.com</td>\r\n" + 
+				"						<th>주소</th>\r\n" + 
+				"						<td colspan=\"2\">대전 광역시 중구 대흥동 영민빌딩</td>\r\n" + 
+				"					</tr>\r\n" + 
+				"					<tr>\r\n" + 
+				"						<th colspan=\"6\" style=\"text-align: center; color: #007acc;\">최종 학력</th>\r\n" + 
+				"					</tr>\r\n" + 
+				"					<tr>\r\n" + 
+				"						<th>학교구분</th>\r\n" + 
+				"						<td>대학교</td>\r\n" + 
+				"						<th>학교명</th>\r\n" + 
+				"						<td>ㄴㅁㅇㅇㄴ</td>\r\n" + 
+				"						<th>전공명</th>\r\n" + 
+				"						<td>test</td>\r\n" + 
+				"					</tr>\r\n" + 
+				"					<tr>\r\n" + 
+				"						<th>기간</th>\r\n" + 
+				"						<td>2021-01-03  ~ 2021-01-30 </td>\r\n" + 
+				"						<th>학점</th>\r\n" + 
+				"						<td>4.0</td>\r\n" + 
+				"						<th>졸업여부</th>\r\n" + 
+				"						<td>N</td>\r\n" + 
+				"					</tr>\r\n" + 
+				"					\r\n" + 
+				"						<tr>\r\n" + 
+				"							<th colspan=\"6\" style=\"text-align: center; color: #007acc;\">자격증</th>\r\n" + 
+				"						</tr>\r\n" + 
+				"						\r\n" + 
+				"							<tr>\r\n" + 
+				"								<th>자격증명</th>\r\n" + 
+				"								<td colspan=\"2\">DB TEST</td>\r\n" + 
+				"								<th>취득일</th>\r\n" + 
+				"								<td colspan=\"2\">2021-01-22 </td>\r\n" + 
+				"							</tr>\r\n" + 
+				"						\r\n" + 
+				"					\r\n" + 
+				"					\r\n" + 
+				"				</tbody></table>\r\n" + 
+				"             </div>\r\n" + 
+				"          </div>\r\n" + 
+				"       </div>\r\n" + 
+				"       <div class=\"row\">\r\n" + 
+				"	       <div class=\"col-md-8\" style=\"text-align: center;\">\r\n" + 
+				"	      	 <a href=\"#\"><button class=\"mb-2 mr-2 btn-transition btn btn-outline-warning\"><i class=\"bi bi-pencil-square\"></i> 이력서 수정</button></a> \r\n" + 
+				"			 <a href=\"delete.do?code=110\"><button class=\"mb-2 mr-2 btn-transition btn btn-outline-danger\"><i class=\"bi bi-trash\"></i> 이력서 삭제</button></a> \r\n" + 
+				"			 <button type=\"button\" onclick=\"history.go(-1)\" class=\"mb-2 mr-2 btn-transition btn btn-outline-secondary\">\r\n" + 
+				"			<i class=\"bi bi-arrow-90deg-left\"></i> 이력서 목록</button>\r\n" + 
+				"			 <button type=\"button\" onclick=\"printPDF()\" class=\"mb-2 mr-2 btn-transition btn btn-outline-secondary\">\r\n" + 
+				"			<i class=\"bi bi-arrow-90deg-left\"></i> PDF출력하기</button>\r\n" + 
+				"		   </div>\r\n" + 
+				"	   </div>\r\n" + 
+				"\r\n" + 
+				"<script>\r\n" + 
+				"function printPDF() {\r\n" + 
+				"	$.ajax({\r\n" + 
+				"		url:\"printPDF.do\",\r\n" + 
+				"		dataType: \"\",\r\n" + 
+				"		success: function () {\r\n" + 
+				"			alert:(\"성공\");\r\n" + 
+				"		},\r\n" + 
+				"		error: function () {\r\n" + 
+				"			alert(\"실패\");\r\n" + 
+				"		}\r\n" + 
+				"	\r\n" + 
+				"	});\r\n" + 
+				"}\r\n" + 
+				"\r\n" + 
+				"</script>\r\n" + 
+				"\r\n" + 
+				"\r\n" + 
+				"</body></html>";
+		return str;
+	}
+
+	public static void createPdf(String filename, String htmlStr, HttpServletRequest request)
+			throws DocumentException, IOException {
+
+		String storePathString = "d:/home/pdfFiles/";
+
+		// 서버 내 파일 주소
+		String serverPath = request.getSession().getServletContext().getRealPath("/") + "WEB-INF/view/resume/resumeSelect.jsp";
+		String cssPath = request.getSession().getServletContext().getRealPath("/") + "assets/css/main.css";
+		String fontPath = request.getSession().getServletContext().getRealPath("/") + "WebContent\\WEB-INF\\view\\resume\\malgun.ttf";
+				
+		System.out.println(request.getSession().getServletContext().getRealPath("/"));
+		
+		File saveFolder = new File(storePathString);
+
+		// 경로가 없으면 생성한다.
+		if (!saveFolder.exists() || saveFolder.isFile()) {
+			saveFolder.mkdirs();
+		}
+
+		// 용지 설정이 가능하다. 생략해도 무관
+		// Document document = new Document(PageSize.A4, 50, 50, 50, 50);
+		Document document = new Document();
+
+		// 파일 확장자는 pdf
+		filename += ".pdf";
+		String realName = storePathString;
+
+		realName += filename;
+		File pdfFile = new File(realName);
+
+		// 파일이 있으면 삭제(같은 이름으로 만들 때마다 새로 쓰기 위해서)
+		if (pdfFile.isFile()) {
+			pdfFile.delete();
+		}
+
+		// pdf를 만들기 시작한다.
+		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(realName));
+
+		document.open();
+
+		// 이미지 태그 절대경로 사용해야 한다.(반드시)
+//		htmlStr = htmlStr.replaceAll("src=\"/", "src=\"http://127.0.0.1:8080/");
+		// 폰트를 설정한다. 폰트 설정 누락시 한글이 안보이는 경우 발생
+//		htmlStr = "<html><body style='font-family: MalgunGothic;'>" + htmlStr + "</body></html>";
+
+		XMLWorkerHelper helper = XMLWorkerHelper.getInstance();
+
+		// css파일
+		CSSResolver cssResolver = new StyleAttrCSSResolver();
+		CssFile cssFile = XMLWorkerHelper.getCSS(new FileInputStream(cssPath));
+		cssResolver.addCss(cssFile);
+
+		XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(XMLWorkerFontProvider.DONTLOOKFORFONTS);
+
+		// 매우매우 중요!!
+		// 반드시 해당 폰트가 경로내에 있어야한다.
+		// (폰트 존재하지 않을 시 pdf 생성 후 열리지 않는 에러 발생)
+		fontProvider.register("D:\\A_TeachingMaterial\\4.MiddleProject\\font\\malgun.ttf", "MalgunGothic"); // MalgunGothic은 font-family용 alias
+		CssAppliers cssAppliers = new CssAppliersImpl(fontProvider);
+
+		HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
+		htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
+
+		// html을 pdf로 변환시작
+		PdfWriterPipeline pdf = new PdfWriterPipeline(document, writer);
+		HtmlPipeline html = new HtmlPipeline(htmlContext, pdf);
+		CssResolverPipeline css = new CssResolverPipeline(cssResolver, html);
+
+		XMLWorker worker = new XMLWorker(css, true);
+		// 캐릭터 셋 설정
+		XMLParser xmlParser = new XMLParser(worker, Charset.forName("UTF-8"));
+
+		StringReader strReader = new StringReader(htmlStr);
+		xmlParser.parse(strReader);
+
+		document.close();
+		writer.close();
+	}
+	
+	
+
+}

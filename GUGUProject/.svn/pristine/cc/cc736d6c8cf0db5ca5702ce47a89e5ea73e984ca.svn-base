@@ -1,0 +1,77 @@
+<%@page import="vo.JobfairVO"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+   pageEncoding="UTF-8"%>
+   
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+<meta name="description" content="This is an example dashboard created using build-in elements and components.">
+<meta name="msapplication-tap-highlight" content="no">
+<link href="/GUGUProject/assets/css/main.css" rel="stylesheet">
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>채용설명회 관리자페이지</title>
+<style>
+
+.top-notice-box { 
+    padding: 22px 0;
+/*     padding-top: 5px;  */
+    background-color: #e8f4ff; 
+    border-left: 1px solid #e0e0e0; 
+    border-right: 1px solid #e0e0e0;
+    text-align: center; 
+ } 
+</style>
+</head>
+<body> 
+   <div class="col-lg-15">
+   <div class="main-card mb-3 card">
+    <div class="card-body"><h5 class="card-title"></h5>
+     <h3 style="text-align: center; font-weight: bold;">채용설명회 일정
+     </h3>
+   <a href="/GUGUProject/jobfair/insert.do">
+   <br>
+   <input type="button" value="추가">
+   </a>
+   <div class="top-notice-box">
+                <p>최근 코로나바이러스감염증-19로 인하여 일정이 갑작스레 취소, 변경될 수 있습니다.    이점 양해 바랍니다!</p>
+   </div>
+   <table class="mb-0 table table-hover"> 
+   	<thead>
+      <tr>
+         <th>분류</th>
+         <th>설명회명</th>
+         <th>일시</th>
+         <th>장소</th>
+         <th>삭제</th>         
+      </tr>
+      </thead>
+      <%
+         List<JobfairVO> jobList = (List<JobfairVO>)request.getAttribute("jobfairList");
+         if(jobList!=null && !jobList.isEmpty()){ //'<td colspan="4">내용이 없습니다.</td>뿌려주기 위함'
+            for(JobfairVO job : jobList){
+      %>
+         <tr>
+            <td><%= job.getJobfairGroup() %></td>
+            <td><a href="/GUGUProject/jobfair/update.do?jobfairCode=<%=job.getJobfairCode()%>"><%= job.getJobfairTitle() %></a></td>
+            <td><%= job.getJobfairStartdate() %></td>
+            <td><%= job.getJobfairPlace() %></td>
+            <td><a href="/GUGUProject/jobfair/delete.do?jobfairCode=<%=job.getJobfairCode()%>">삭제</a></td>
+         </tr>
+      <%      
+            }
+         }else{
+      %>
+         <tr>
+            <td colspan="4">내용이 없습니다.</td>
+         </tr>
+      <%   
+         }
+      %>
+      
+   	</table>
+	
+</body>
+</html>
